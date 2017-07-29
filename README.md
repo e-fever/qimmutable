@@ -1,5 +1,5 @@
-QSyncable - Synchronize data between models
-===========================================
+This project is still under construction
+
 
 QSyncable provides a QML friendly list model (based on QAbstractItemModel) as a wrapper of any data structure from C++ / Javascript. Instead, to access data from the original source per query, it duplicates a copy of data locally, and keep updated by an average O(n) synchronization algorithm. Every update is carried by passing a full copy of data snapshot. It will find out the diff and transform into a list of change operations like insertion, removal and move. It will guarantee the behaviour is identical to the original QML ListModel. Therefore, UI components could react to the changes correctly.
 
