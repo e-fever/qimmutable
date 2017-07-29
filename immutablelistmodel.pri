@@ -12,12 +12,12 @@ HEADERS += \
     $$PWD/qsjsonlistmodel.h \
     $$PWD/QSDiffRunner \
     $$PWD/QSListModel \
-    $$PWD/qsyncablefunctions.h \
     $$PWD/qsyncableqmlwrapper.h \
     $$PWD/priv/qsalgotypes_p.h \
     $$PWD/priv/qsimmutablewrapper_p.h \
     $$PWD/priv/qsfastdiffrunneralgo_p.h \
-    $$PWD/qsfastdiffrunner.h
+    $$PWD/qsfastdiffrunner.h \
+    $$PWD/immutablelistmodelfunctions.h
 
 SOURCES += \
     $$PWD/qsdiffrunner.cpp \
@@ -29,5 +29,5 @@ SOURCES += \
     $$PWD/qstreenode.cpp \
     $$PWD/qsjsonlistmodel.cpp \
     $$PWD/qsyncableqmltypes.cpp \
-    $$PWD/qsyncablefunctions.cpp \
-    $$PWD/qsyncableqmlwrapper.cpp
+    $$PWD/qsyncableqmlwrapper.cpp \
+    $$PWD/immutablelistmodelfunctions.cpp

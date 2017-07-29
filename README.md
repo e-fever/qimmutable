@@ -7,7 +7,8 @@ ImmutableListModel is an easy to use list model for QML.
 It is a wrapper of Immutable data structure in C++/JavaScript.
 It takes an array as input source.
 Whatever the data updated, user should pass a new copy of data to ImmutableListModel.
-Then it will find out the diff and transform into a list of change operations like insertion, removal and move by an average O(n) algorithm.
+Then it will perform a synchronization by finding out the diff from previous and current snapshot.
+It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm.
 And apply the changes to itself.
 It will guarantee the behaviour is almost identical to the original QML ListModel.
 Such that the UI components could react to the changes correctly.
@@ -123,27 +124,15 @@ Download a release and bundle the folder within your source tree.
 Or:
 
 ```
-qpm install com.github.benlau.qsyncable
+qpm install net.efever.immutablelistmodel
 ```
 
 Class Reference
 ---------------
 
-[QSyncable - Class Reference](http://benlau.github.io/qsyncable/)
+[ImmutableListModel - Class Reference](http://efever.github.io/immutablelistmodel/)
 
 Example
 -------
 
-[faketrello](https://github.com/benlau/qsyncable/tree/master/examples/faketrello) - Simulate a Trello card board.
-
-Future Development
-===================
-
-1) FastDiffRunner
-
-It is a diff runner to work with implicit sharing class (Immutable data type). It is able to achieve an O(1) comparison if data is not changed and it is not necessary to convert to QVariantMap type before comparison. It will be much faster than the original DiffRunner.
-
-Link: [FastDiffRunner Proposal](https://github.com/benlau/qsyncable/wiki/FastDiffRunner-Proposal)
-
-Status: Not started as the priority is low when compared to another project.
-
+[faketrello](https://github.com/efever/immutablelistmodel/tree/master/examples/faketrello) - Simulate a Trello card board.

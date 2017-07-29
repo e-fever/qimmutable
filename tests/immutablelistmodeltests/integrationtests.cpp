@@ -7,7 +7,7 @@
 #include "automator.h"
 #include "integrationtests.h"
 
-using namespace QSyncable;
+using namespace ImmutableListModelFunc;
 
 IntegrationTests::IntegrationTests(QObject *parent) : QObject(parent)
 {
@@ -88,7 +88,7 @@ void IntegrationTests::test_assign()
     /* assign(map, QObject) */
 
     QVariantMap data;
-    QSyncable::assign(data, root);
+    ImmutableListModelFunc::assign(data, root);
 
     QVERIFY(data["objectName"] == "Root");
     QVERIFY(data["value1"].toInt() == 1);
@@ -105,7 +105,7 @@ void IntegrationTests::test_assign()
     value4["value1"] = 32;
     data["value4"] = value4;
 
-    QSyncable::assign(root, data);
+    ImmutableListModelFunc::assign(root, data);
     QVERIFY(root->property("value1").toInt() == 99);
     QVERIFY(root->property("value4").value<QObject*>()->property("value1").toInt() == 32);
 
@@ -113,7 +113,7 @@ void IntegrationTests::test_assign()
     QString content = QtShell::cat(QString(SRCDIR) + "/SampleData1.json");
     QJSValue value = engine.evaluate(content);
 
-    QSyncable::assign(root, value);
+    ImmutableListModelFunc::assign(root, value);
 
     QCOMPARE(root->property("value1").toInt(), 10);
     QVERIFY(root->property("value2").toString() == "11");
@@ -125,7 +125,7 @@ void IntegrationTests::test_assign()
         QString content = QtShell::cat(QString(SRCDIR) + "/SampleData1.json");
         QJSValue value = engine.evaluate(content);
 
-        QSyncable::assign(0, value);
+        ImmutableListModelFunc::assign(0, value);
     }
 }
 
@@ -140,20 +140,20 @@ void IntegrationTests::test_get()
     QVERIFY(root);
 
     /* get(QObject*, QString) */
-    QVariant value = QSyncable::get(root, "value4.value1");
+    QVariant value = ImmutableListModelFunc::get(root, "value4.value1");
     QCOMPARE(value.toInt(), 5);
 
-    value = QSyncable::get(root,"value4.valueX", QString("Not Found"));
+    value = ImmutableListModelFunc::get(root,"value4.valueX", QString("Not Found"));
     QVERIFY(value.toString() == "Not Found");
 
     /* get(QVarnaintMap, QString) */
 
     QVariantMap source;
     assign(source, root);
-    value = QSyncable::get(source, "value2");
+    value = ImmutableListModelFunc::get(source, "value2");
     QVERIFY(value.toString() == "2");
 
-    value = QSyncable::get(source, "valueX");
+    value = ImmutableListModelFunc::get(source, "valueX");
     QVERIFY(value.isNull());
 
 }
@@ -161,24 +161,24 @@ void IntegrationTests::test_get()
 void IntegrationTests::test_set()
 {
     QVariantMap data;
-    QSyncable::set(data,"value1", 1);
+    ImmutableListModelFunc::set(data,"value1", 1);
     QVERIFY(data.contains("value1"));
     QVERIFY(data["value1"].toInt() == 1);
 
-    QSyncable::set(data,"value2","value2");
+    ImmutableListModelFunc::set(data,"value2","value2");
     QVERIFY(data.contains("value1"));
     QVERIFY(data["value1"].toInt() == 1);
     QVERIFY(data.contains("value2"));
     QVERIFY(data["value2"].toString() == "value2");
 
-    QSyncable::set(data,"value3.value1",2);
+    ImmutableListModelFunc::set(data,"value3.value1",2);
 
     QVariantMap value3 = data["value3"].toMap();
     QVERIFY(value3["value1"].toInt() == 2);
 
     /* Override value */
     data["value4"] = true;
-    QSyncable::set(data,"value4.value1",3);
+    ImmutableListModelFunc::set(data,"value4.value1",3);
     QVariant value4 = data["value4"];
     QVERIFY(value4.canConvert<QVariantMap>());
 
@@ -195,9 +195,9 @@ void IntegrationTests::test_pick()
     QObject* root = automator.findObject("Root");
     QVERIFY(root);
 
-    /* QSyncable::pick(QObject*, paths) */
+    /* ImmutableListModelFunc::pick(QObject*, paths) */
 
-    QVariantMap data = QSyncable::pick(root, QStringList()
+    QVariantMap data = ImmutableListModelFunc::pick(root, QStringList()
                                        << "value1"
                                        << "value4.value1");
 
@@ -209,14 +209,14 @@ void IntegrationTests::test_pick()
     QVERIFY(data["value4"].toMap()["value1"].toInt() == 5);
 
     // Pick an QObject
-    data = QSyncable::pick(root, QStringList() << "value4");
+    data = ImmutableListModelFunc::pick(root, QStringList() << "value4");
     QVERIFY(data["value4"].type() == QVariant::Map);
 
-    /* QSyncable::pick(QVariant, paths) */
+    /* ImmutableListModelFunc::pick(QVariant, paths) */
     QVariantMap source;
-    QSyncable::assign(source, root);
+    ImmutableListModelFunc::assign(source, root);
 
-    data = QSyncable::pick(source, QStringList() << "value1" << "value4.value1");
+    data = ImmutableListModelFunc::pick(source, QStringList() << "value1" << "value4.value1");
 
     QCOMPARE(data.size(), 2);
     QVERIFY(data.contains("value1"));
@@ -239,12 +239,12 @@ void IntegrationTests::test_omit()
 
     QVariantMap data1;
 
-    QSyncable::assign(data1, root);
+    ImmutableListModelFunc::assign(data1, root);
     QVariantMap properties;
     properties["value1"] = true;
     properties["value3"] = false; // omit do not care the content
 
-    QVariantMap data2 = QSyncable::omit(data1, properties);
+    QVariantMap data2 = ImmutableListModelFunc::omit(data1, properties);
 
     QVERIFY(!data2.contains("value1"));
     QVERIFY(data2.contains("value2"));

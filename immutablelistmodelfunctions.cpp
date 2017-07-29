@@ -1,8 +1,8 @@
 #include <QMetaProperty>
 #include <QtQml>
-#include "qsyncablefunctions.h"
+#include "immutablelistmodelfunctions.h"
 
-void QSyncable::assign(QVariantMap &dest, const QObject *source)
+void ImmutableListModelFunc::assign(QVariantMap &dest, const QObject *source)
 {
     const QMetaObject* meta = source->metaObject();
 
@@ -23,7 +23,7 @@ void QSyncable::assign(QVariantMap &dest, const QObject *source)
 
 }
 
-void QSyncable::assign(QObject *dest, const QVariantMap & source)
+void ImmutableListModelFunc::assign(QObject *dest, const QVariantMap & source)
 {
     const QMetaObject* meta = dest->metaObject();
 
@@ -33,7 +33,7 @@ void QSyncable::assign(QObject *dest, const QVariantMap & source)
 
         int index = meta->indexOfProperty(key.constData());
         if (index < 0) {
-            qWarning() << QString("QSyncable::assign:assign a non-existed property: %1").arg(iter.key());
+            qWarning() << QString("ImmutableListModelFunc::assign:assign a non-existed property: %1").arg(iter.key());
             iter++;
             continue;
         }
@@ -43,7 +43,7 @@ void QSyncable::assign(QObject *dest, const QVariantMap & source)
 
         if (orig.canConvert<QObject*>()) {
             if (value.type() != QVariant::Map) {
-                qWarning() << QString("QSyncable::assign:expect a QVariantMap property but it is not: %1");
+                qWarning() << QString("ImmutableListModelFunc::assign:expect a QVariantMap property but it is not: %1");
             } else {
                 assign(orig.value<QObject*>(), value.toMap());
             }
@@ -56,7 +56,7 @@ void QSyncable::assign(QObject *dest, const QVariantMap & source)
     }
 }
 
-void QSyncable::assign(QObject *dest, const QJSValue &source)
+void ImmutableListModelFunc::assign(QObject *dest, const QJSValue &source)
 {
     if (dest == 0) {
         return;
@@ -70,7 +70,7 @@ void QSyncable::assign(QObject *dest, const QJSValue &source)
         QByteArray key = iter.name().toLocal8Bit();
         int index = meta->indexOfProperty(key.constData());
         if (index < 0) {
-            qWarning() << QString("QSyncable::assign:assign a non-existed property: %1").arg(iter.name());
+            qWarning() << QString("ImmutableListModelFunc::assign:assign a non-existed property: %1").arg(iter.name());
             continue;
         }
 
@@ -78,7 +78,7 @@ void QSyncable::assign(QObject *dest, const QJSValue &source)
 
         if (orig.canConvert<QObject*>()) {
             if (!iter.value().isObject()) {
-                qWarning() << QString("QSyncable::assign:expect a object property but it is not: %1");
+                qWarning() << QString("ImmutableListModelFunc::assign:expect a object property but it is not: %1");
             } else {
                 assign(orig.value<QObject*>(), iter.value());
             }
@@ -149,32 +149,32 @@ static QVariant _get(const QVariantMap& object, const QStringList &path, const Q
     }
 }
 
-QVariant QSyncable::get(const QObject *object, const QString &path, const QVariant& defaultValue)
+QVariant ImmutableListModelFunc::get(const QObject *object, const QString &path, const QVariant& defaultValue)
 {
     return get(object, path.split("."), defaultValue);
 }
 
-QVariant QSyncable::get(const QObject *object, const QStringList &path, const QVariant& defaultValue)
+QVariant ImmutableListModelFunc::get(const QObject *object, const QStringList &path, const QVariant& defaultValue)
 {
     return _get(object, path, defaultValue);
 }
 
-QVariant QSyncable::get(const QVariantMap &source, const QString &path, const QVariant &defaultValue)
+QVariant ImmutableListModelFunc::get(const QVariantMap &source, const QString &path, const QVariant &defaultValue)
 {
     return get(source, path.split("."), defaultValue);
 }
 
-QVariant QSyncable::get(const QVariantMap &source, const QStringList &path, const QVariant &defaultValue)
+QVariant ImmutableListModelFunc::get(const QVariantMap &source, const QStringList &path, const QVariant &defaultValue)
 {
     return _get(source, path, defaultValue);
 }
 
-void QSyncable::set(QVariantMap &data, const QString &path, const QVariant &value)
+void ImmutableListModelFunc::set(QVariantMap &data, const QString &path, const QVariant &value)
 {
     return set(data, path.split("."), value);
 }
 
-void QSyncable::set(QVariantMap &data, const QStringList &path, const QVariant &value)
+void ImmutableListModelFunc::set(QVariantMap &data, const QStringList &path, const QVariant &value)
 {
     QString key = path[0];
 
@@ -192,7 +192,7 @@ void QSyncable::set(QVariantMap &data, const QStringList &path, const QVariant &
     }
 }
 
-QVariantMap QSyncable::pick(QObject *object, const QStringList &paths)
+QVariantMap ImmutableListModelFunc::pick(QObject *object, const QStringList &paths)
 {
     QVariantMap data;
     foreach (QString path, paths) {
@@ -213,7 +213,7 @@ QVariantMap QSyncable::pick(QObject *object, const QStringList &paths)
 }
 
 
-QVariantMap QSyncable::pick(QVariantMap source, const QStringList &paths)
+QVariantMap ImmutableListModelFunc::pick(QVariantMap source, const QStringList &paths)
 {
     QVariantMap data;
     foreach (QString path, paths) {
@@ -233,12 +233,12 @@ QVariantMap QSyncable::pick(QVariantMap source, const QStringList &paths)
     return data;
 }
 
-QVariantMap QSyncable::pick(QVariantMap source, const QVariantMap &paths)
+QVariantMap ImmutableListModelFunc::pick(QVariantMap source, const QVariantMap &paths)
 {
     return pick(source, paths.keys());
 }
 
-QVariantMap QSyncable::omit(const QVariantMap &source, const QVariantMap &properties)
+QVariantMap ImmutableListModelFunc::omit(const QVariantMap &source, const QVariantMap &properties)
 {
 
     QMap<QString,QVariant>::const_iterator iter = source.begin();
