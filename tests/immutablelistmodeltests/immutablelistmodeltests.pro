@@ -1,7 +1,7 @@
 QT       += qml quick testlib
 QT       -= gui
 
-TARGET = qsyncableunittests
+TARGET = immutablelistmodel
 CONFIG   += console
 CONFIG   -= app_bundle
 
@@ -31,7 +31,7 @@ HEADERS += \
     immutabletype3.h
 
 include(vendor/vendor.pri)
-include(../../qsyncable.pri)
+include(../../immutablelistmodel.pri)
 
 DISTFILES += \
     tst_jsonModel.qml \

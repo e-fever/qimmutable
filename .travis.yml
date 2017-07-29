@@ -14,11 +14,11 @@ before_install:
     - sh -e /etc/init.d/xvfb start
 script:
     - source /opt/qt55/bin/qt55-env.sh 
-    - cd tests/qsyncableunittests
+    - cd tests/immutablelistmodeltests
     - qpm install
     - qmake
     - make
     - ls
-    - ./qsyncableunittests
-    - valgrind --leak-check=full --show-reachable=yes ./qsyncableunittests QSyncableTests
+    - ./immutablelistmodel
+    - valgrind --leak-check=full --show-reachable=yes ./immutablelistmodel QSyncableTests
   
