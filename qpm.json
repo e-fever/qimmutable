@@ -1,22 +1,22 @@
 {
-  "name": "com.github.benlau.qsyncable",
-  "description": "Synchronize data between models",
+  "name": "net.efever.immutablelistmodel",
+  "description": "List Model for Immutable Data Type",
   "author": {
     "name": "Ben Lau",
     "email": "xbenlau@gmail.com"
   },
   "repository": {
     "type": "GITHUB",
-    "url": "https://github.com/benlau/qsyncable.git"
+    "url": "https://github.com/e-fever/immutablelistmodel.git"
   },
   "version": {
-    "label": "1.0.2.5",
+    "label": "0.0.1",
     "revision": "",
     "fingerprint": ""
   },
   "dependencies": [
   ],
   "license": "APACHE_2_0",
-  "pri_filename": "qsyncable.pri",
+  "pri_filename": "immutablelistmodel.pri",
   "webpage": ""
 }
