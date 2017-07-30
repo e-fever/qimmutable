@@ -67,6 +67,8 @@ namespace ImmutableListModelFunc {
      */
     QVariantMap omit(const QVariantMap& source, const QVariantMap& properties);
 
+    QVariantMap diff(const QVariantMap& v1, const QVariantMap& v2);
+
 }
 
 #endif // QSYNCABLEFUNCTIONS_H

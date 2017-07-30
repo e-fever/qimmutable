@@ -266,3 +266,23 @@ QVariantMap ImmutableListModelFunc::omit(const QVariantMap &source, const QVaria
     return result;
 }
 
+
+QVariantMap ImmutableListModelFunc::diff(const QVariantMap &v1, const QVariantMap &v2)
+{
+    auto prev = v1;
+    auto current = v2;
+
+    QVariantMap res;
+    QMap<QString, QVariant>::const_iterator iter = current.begin();
+
+    while (iter != current.end()) {
+        QString key = iter.key();
+        if (!prev.contains(key) ||
+             prev[key] != iter.value()) {
+            res[key] = iter.value();
+        }
+        iter++;
+    }
+
+    return res;
+}

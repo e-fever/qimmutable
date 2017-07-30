@@ -1,6 +1,7 @@
 #pragma once
 #include <QVariantMap>
 #include <QMetaMethod>
+#include "immutablelistmodelfunctions.h"
 
 template <typename T>
 class QSImmutableWrapper {
@@ -58,19 +59,7 @@ public:
         auto prev = convert(v1);
         auto current = convert(v2);
 
-        QVariantMap res;
-        QMap<QString, QVariant>::const_iterator iter = current.begin();
-
-        while (iter != current.end()) {
-            QString key = iter.key();
-            if (!prev.contains(key) ||
-                 prev[key] != iter.value()) {
-                res[key] = iter.value();
-            }
-            iter++;
-        }
-
-        return res;
+        return ImmutableListModelFunc::diff(prev, current);
     }
 
     QVariantMap fastDiff(const T& v1, const T& v2) {
@@ -93,22 +82,7 @@ public:
     }
 
     QVariantMap diff(const QVariantMap& v1, const QVariantMap& v2) {
-        auto prev = v1;
-        auto current = v2;
-
-        QVariantMap res;
-        QMap<QString, QVariant>::const_iterator iter = current.begin();
-
-        while (iter != current.end()) {
-            QString key = iter.key();
-            if (!prev.contains(key) ||
-                 prev[key] != iter.value()) {
-                res[key] = iter.value();
-            }
-            iter++;
-        }
-
-        return res;
+        return ImmutableListModelFunc::diff(v1, v2);
     }
 
     QVariantMap fastDiff(const QVariantMap& v1, const QVariantMap& v2) {
