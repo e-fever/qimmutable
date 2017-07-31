@@ -1,19 +1,24 @@
 language : cpp
+dist: trusty
 env:
   - DISPLAY=:99.0
+addons:
+  apt:
+    packages:
+    - valgrind
 compiler:
   - gcc
 before_install:
-    - cat /etc/apt/sources.list
-    - sudo add-apt-repository --yes ppa:beineri/opt-qt551
-    - sudo add-apt-repository --yes "deb http://download.opensuse.org/repositories/home:/benlau/xUbuntu_15.10 ./"
-    - cat /etc/apt/sources.list
-    - sudo apt-get update
-    - apt-cache search qt5
-    - sudo apt-get install --force-yes -qq qt55quickcontrols  qt55declarative qt55script qt55graphicaleffects qpm valgrind
+    - export GOPATH=`pwd`/gosrc
+    - export PATH=`pwd`/gosrc/bin:$PATH
+    - go get qpm.io/qpm
+    - find $GOPATH
     - sh -e /etc/init.d/xvfb start
 script:
-    - source /opt/qt55/bin/qt55-env.sh 
+    - git clone https://github.com/benlau/qtci.git
+    - source qtci/path.env
+    - qt-5.5.1
+    - source qt-5.5.1.env
     - cd tests/immutablelistmodeltests
     - qpm install
     - qmake
