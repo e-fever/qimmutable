@@ -286,3 +286,12 @@ QVariantMap ImmutableListModelFunc::diff(const QVariantMap &v1, const QVariantMa
 
     return res;
 }
+
+bool ImmutableListModelFunc::fastCompare(QVariant v1, QVariant v2)
+{
+    if (v1.userType() != v2.userType()) {
+        return false;
+    }
+
+    return v1 == v2;
+}

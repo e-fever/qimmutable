@@ -16,6 +16,7 @@ private:
 
 private slots:
     void test_QSImmutable_wrapper();
+    void test_compare();
 
     void test_QSFastDiffRunner();
     void test_QSFastDiffRunner_data();

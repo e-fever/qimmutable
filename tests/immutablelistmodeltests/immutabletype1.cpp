@@ -1,3 +1,4 @@
+#include <QtCore>
 #include "immutabletype1.h"
 
 class ImmutableType1Data : public QSharedData
@@ -45,6 +46,7 @@ void ImmutableType1::setId(QString value1)
 
 QString ImmutableType1::key() const
 {
+
     return data->id;
 }
 

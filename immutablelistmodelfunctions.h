@@ -67,6 +67,11 @@ namespace ImmutableListModelFunc {
      */
     QVariantMap omit(const QVariantMap& source, const QVariantMap& properties);
 
+    /// Compare two variant in a fast way. If it is a immutable type, it will simply compare the instance
+    bool fastCompare(QVariant v1, QVariant v2);
+
+    /// Find out the diff between QVariantMap
+
     QVariantMap diff(const QVariantMap& v1, const QVariantMap& v2);
 
 }
