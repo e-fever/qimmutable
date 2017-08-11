@@ -17,6 +17,10 @@ An immediate benefit of using ImmutableListModel is the simplification of the da
 
 Moreover, ImmutableListModel could also be used as a solution for the nested list model.
 
+Reference: 
+
+1. [Efficient models for QML with QSyncable - Google Slides](https://docs.google.com/presentation/d/13pkRav2Fks_AKTXfKtGTyBuc_RmkZGiDRQZTr4usQFk/pub?start=false&loop=false&delayms=3000&slide=id.p)
+
 How does it work?
 -------------
 
