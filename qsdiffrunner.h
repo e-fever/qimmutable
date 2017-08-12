@@ -9,7 +9,7 @@
 
 #include "qspatch.h"
 #include "qspatchable.h"
-#include "immutablelistmodelfunctions.h"
+#include "qimmutablefunctions.h"
 
 class QSDiffRunner
 {

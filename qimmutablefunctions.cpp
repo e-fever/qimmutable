@@ -1,8 +1,8 @@
 #include <QMetaProperty>
 #include <QtQml>
-#include "immutablelistmodelfunctions.h"
+#include "qimmutablefunctions.h"
 
-void ImmutableListModelFunc::assign(QVariantMap &dest, const QObject *source)
+void QImmutable::assign(QVariantMap &dest, const QObject *source)
 {
     const QMetaObject* meta = source->metaObject();
 
@@ -23,7 +23,7 @@ void ImmutableListModelFunc::assign(QVariantMap &dest, const QObject *source)
 
 }
 
-void ImmutableListModelFunc::assign(QObject *dest, const QVariantMap & source)
+void QImmutable::assign(QObject *dest, const QVariantMap & source)
 {
     const QMetaObject* meta = dest->metaObject();
 
@@ -56,7 +56,7 @@ void ImmutableListModelFunc::assign(QObject *dest, const QVariantMap & source)
     }
 }
 
-void ImmutableListModelFunc::assign(QObject *dest, const QJSValue &source)
+void QImmutable::assign(QObject *dest, const QJSValue &source)
 {
     if (dest == 0) {
         return;
@@ -149,32 +149,32 @@ static QVariant _get(const QVariantMap& object, const QStringList &path, const Q
     }
 }
 
-QVariant ImmutableListModelFunc::get(const QObject *object, const QString &path, const QVariant& defaultValue)
+QVariant QImmutable::get(const QObject *object, const QString &path, const QVariant& defaultValue)
 {
     return get(object, path.split("."), defaultValue);
 }
 
-QVariant ImmutableListModelFunc::get(const QObject *object, const QStringList &path, const QVariant& defaultValue)
+QVariant QImmutable::get(const QObject *object, const QStringList &path, const QVariant& defaultValue)
 {
     return _get(object, path, defaultValue);
 }
 
-QVariant ImmutableListModelFunc::get(const QVariantMap &source, const QString &path, const QVariant &defaultValue)
+QVariant QImmutable::get(const QVariantMap &source, const QString &path, const QVariant &defaultValue)
 {
     return get(source, path.split("."), defaultValue);
 }
 
-QVariant ImmutableListModelFunc::get(const QVariantMap &source, const QStringList &path, const QVariant &defaultValue)
+QVariant QImmutable::get(const QVariantMap &source, const QStringList &path, const QVariant &defaultValue)
 {
     return _get(source, path, defaultValue);
 }
 
-void ImmutableListModelFunc::set(QVariantMap &data, const QString &path, const QVariant &value)
+void QImmutable::set(QVariantMap &data, const QString &path, const QVariant &value)
 {
     return set(data, path.split("."), value);
 }
 
-void ImmutableListModelFunc::set(QVariantMap &data, const QStringList &path, const QVariant &value)
+void QImmutable::set(QVariantMap &data, const QStringList &path, const QVariant &value)
 {
     QString key = path[0];
 
@@ -192,7 +192,7 @@ void ImmutableListModelFunc::set(QVariantMap &data, const QStringList &path, con
     }
 }
 
-QVariantMap ImmutableListModelFunc::pick(QObject *object, const QStringList &paths)
+QVariantMap QImmutable::pick(QObject *object, const QStringList &paths)
 {
     QVariantMap data;
     foreach (QString path, paths) {
@@ -213,7 +213,7 @@ QVariantMap ImmutableListModelFunc::pick(QObject *object, const QStringList &pat
 }
 
 
-QVariantMap ImmutableListModelFunc::pick(QVariantMap source, const QStringList &paths)
+QVariantMap QImmutable::pick(QVariantMap source, const QStringList &paths)
 {
     QVariantMap data;
     foreach (QString path, paths) {
@@ -233,12 +233,12 @@ QVariantMap ImmutableListModelFunc::pick(QVariantMap source, const QStringList &
     return data;
 }
 
-QVariantMap ImmutableListModelFunc::pick(QVariantMap source, const QVariantMap &paths)
+QVariantMap QImmutable::pick(QVariantMap source, const QVariantMap &paths)
 {
     return pick(source, paths.keys());
 }
 
-QVariantMap ImmutableListModelFunc::omit(const QVariantMap &source, const QVariantMap &properties)
+QVariantMap QImmutable::omit(const QVariantMap &source, const QVariantMap &properties)
 {
 
     QMap<QString,QVariant>::const_iterator iter = source.begin();
@@ -267,7 +267,7 @@ QVariantMap ImmutableListModelFunc::omit(const QVariantMap &source, const QVaria
 }
 
 
-QVariantMap ImmutableListModelFunc::diff(const QVariantMap &v1, const QVariantMap &v2)
+QVariantMap QImmutable::diff(const QVariantMap &v1, const QVariantMap &v2)
 {
     auto prev = v1;
     auto current = v2;
@@ -287,7 +287,7 @@ QVariantMap ImmutableListModelFunc::diff(const QVariantMap &v1, const QVariantMa
     return res;
 }
 
-bool ImmutableListModelFunc::fastCompare(QVariant v1, QVariant v2)
+bool QImmutable::fastCompare(QVariant v1, QVariant v2)
 {
     if (v1.userType() != v2.userType()) {
         return false;

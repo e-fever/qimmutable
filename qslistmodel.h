@@ -11,7 +11,7 @@
 #include <QPointer>
 #include <QSharedPointer>
 #include "qspatchable.h"
-#include "immutablelistmodelfunctions.h"
+#include "qimmutablefunctions.h"
 
 class QSListModel : public QAbstractListModel, public QSPatchable
 {

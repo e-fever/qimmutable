@@ -90,40 +90,16 @@ void FastDiffTests::test_compare()
     QVariant v1,v2;
 
     {
-        class A {
-        public:
-
-        };
-
-        A a1, a2;
-
-    }
-
-    {
         ImmutableType1 t1a,t1b;
         v1 = QVariant::fromValue<ImmutableType1>(t1a);
         v2 = QVariant::fromValue<ImmutableType1>(t1b);
 
-        int result;
-        qDebug() << QMetaType::equals(&t1a, &t1a, v1.userType(), &result);
-        qDebug() << QMetaType::equals(v1.constData(), v2.constData(), v1.userType(), &result);
-
-        qDebug() << result;
-//        qDebug() << qIsNumericType(v1.userType());
-
-        qDebug() << QMetaType::equals(&t1a, &t1b, v1.userType(), &result);
-        QVERIFY(!ImmutableListModelFunc::fastCompare(v1, v2));
+        QVERIFY(!QImmutable::fastCompare(v1, v2));
         t1a = t1b;
-        qDebug() << QMetaType::equals(&t1a, &t1b, v1.userType(), &result);
-        qDebug() << result;
-
-        qDebug() << v1.userType() << v1.type() << v2.userType();
-        qDebug() << QMetaType::hasRegisteredComparators(v1.userType());
-        qDebug() << QMetaType::hasRegisteredComparators<ImmutableType1>();
 
         v1 = QVariant::fromValue<ImmutableType1>(t1a);
         QVERIFY(v1 == v2);
-        QVERIFY(ImmutableListModelFunc::fastCompare(v1, v2));
+        QVERIFY(QImmutable::fastCompare(v1, v2));
     }
 
     {
@@ -135,13 +111,12 @@ void FastDiffTests::test_compare()
         v1 = QVariant::fromValue<QList<ImmutableType1>>(l1);
         v2 = QVariant::fromValue<QList<ImmutableType1>>(l2);
 
-        qDebug() << v1.userType();
-        qDebug() << QMetaType::hasRegisteredComparators(v1.userType());
+        QVERIFY(!QMetaType::hasRegisteredComparators(v1.userType()));
 
-        QVERIFY(!ImmutableListModelFunc::fastCompare(v1, v2));
+        QVERIFY(!QImmutable::fastCompare(v1, v2));
         l1 = l2;
         v1 = QVariant::fromValue<QList<ImmutableType1>>(l1);
-        QVERIFY(ImmutableListModelFunc::fastCompare(v1, v2));
+        QVERIFY(QImmutable::fastCompare(v1, v2));
     }
 
 }

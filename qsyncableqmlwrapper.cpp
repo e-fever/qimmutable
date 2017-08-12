@@ -1,4 +1,4 @@
-#include "immutablelistmodelfunctions.h"
+#include "qimmutablefunctions.h"
 #include "qsyncableqmlwrapper.h"
 
 QSyncableQmlWrapper::QSyncableQmlWrapper(QObject *parent) : QObject(parent)
@@ -8,5 +8,5 @@ QSyncableQmlWrapper::QSyncableQmlWrapper(QObject *parent) : QObject(parent)
 
 void QSyncableQmlWrapper::assign(QObject *dest, QJSValue source)
 {
-    return ImmutableListModelFunc::assign(dest, source);
+    return QImmutable::assign(dest, source);
 }

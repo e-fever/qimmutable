@@ -5,7 +5,7 @@
 #include <QJSValue>
 #include <QVariant>
 
-namespace ImmutableListModelFunc {
+namespace QImmutable {
 
     /// Assign properties from source object to the destination object.
     void assign(QVariantMap& dest, const QObject*source);
