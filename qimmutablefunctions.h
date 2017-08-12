@@ -5,6 +5,8 @@
 #include <QJSValue>
 #include <QVariant>
 #include <string.h>
+#include <QMetaProperty>
+#include <QDebug>
 
 namespace QImmutable {
 
@@ -14,6 +16,39 @@ namespace QImmutable {
     void assign(QObject* dest, const QVariantMap& source);
 
     void assign(QObject* dest, const QJSValue& source);
+
+    template <typename T>
+    void assignOnGadget(T& dest, const QVariantMap& source) {
+        const QMetaObject meta = T::staticMetaObject;
+
+        QMap<QString,QVariant>::const_iterator iter = source.begin();
+        while (iter != source.end()) {
+            QByteArray key = iter.key().toLocal8Bit();
+
+            int index = meta.indexOfProperty(key.constData());
+            if (index < 0) {
+                qWarning() << QString("QImmutable::assign:assign a non-existed property: %1").arg(iter.key());
+                iter++;
+                continue;
+            }
+            QMetaProperty prop = meta.property(index);
+
+            QVariant orig = prop.readOnGadget(&dest);
+            QVariant value = source[iter.key()];
+
+            if (orig.canConvert<QObject*>()) {
+                if (value.type() != QVariant::Map) {
+                    qWarning() << QString("QImmutable::assign:expect a QVariantMap property but it is not: %1");
+                } else {
+                    assign(orig.value<QObject*>(), value.toMap());
+                }
+            } else if (orig != value) {
+                prop.writeOnGadget(&dest, value);
+            }
+
+            iter++;
+        }
+    }
 
     /// Gets the value at path of object. If the path is not found, the defaultValue is returned.
     /*

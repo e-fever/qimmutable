@@ -3,8 +3,8 @@ ImmutableListModel - A List Model for Immutable Data Type
 
 **This project is still under construction**
 
-ImmutableListModel is an easy to use list model for QML.
-It is a wrapper of Immutable data structure in C++/JavaScript.
+QImmutable offers an easy to use list model for QML.
+It is a wrapper of immutable data structure in C++/JavaScript.
 It takes an array as input source.
 Whatever the data updated, user should pass a new copy of data to ImmutableListModel.
 Then it will perform a synchronization by finding out the diff from previous and current snapshot.

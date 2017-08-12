@@ -25,5 +25,5 @@ script:
     - make
     - ls
     - ./qimmutabletests
-    - valgrind --leak-check=full --show-reachable=yes ./qimmutabletests
+    - valgrind --leak-check=full --show-reachable=yes ./qimmutabletests QSyncableTests
   

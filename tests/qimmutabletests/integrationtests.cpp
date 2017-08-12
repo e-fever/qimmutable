@@ -3,9 +3,11 @@
 #include <QSortFilterProxyModel>
 #include <QSDiffRunner>
 #include <QtShell>
+#include "immutabletype1.h"
 #include "QQmlApplicationEngine"
 #include "automator.h"
 #include "integrationtests.h"
+#include "qimmutablefunctions.h"
 
 using namespace QImmutable;
 
@@ -127,6 +129,17 @@ void IntegrationTests::test_assign()
 
         QImmutable::assign(0, value);
     }
+
+    /* assignOnGadget(gadget, QVariantMap) */
+    {
+        QVariantMap data;
+        data["id"] = "3";
+        data["value"] = "4";
+        ImmutableType1 target;
+        QImmutable::assignOnGadget(target, data);
+        QCOMPARE(target.id(), QString("3"));
+        QCOMPARE(target.value(), QString("4"));
+    }
 }
 
 void IntegrationTests::test_get()
@@ -195,7 +208,7 @@ void IntegrationTests::test_pick()
     QObject* root = automator.findObject("Root");
     QVERIFY(root);
 
-    /* ImmutableListModelFunc::pick(QObject*, paths) */
+    /* QImmutable::pick(QObject*, paths) */
 
     QVariantMap data = QImmutable::pick(root, QStringList()
                                        << "value1"
@@ -212,7 +225,7 @@ void IntegrationTests::test_pick()
     data = QImmutable::pick(root, QStringList() << "value4");
     QVERIFY(data["value4"].type() == QVariant::Map);
 
-    /* ImmutableListModelFunc::pick(QVariant, paths) */
+    /* QImmutable::pick(QVariant, paths) */
     QVariantMap source;
     QImmutable::assign(source, root);
 

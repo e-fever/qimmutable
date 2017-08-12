@@ -33,7 +33,7 @@ void QImmutable::assign(QObject *dest, const QVariantMap & source)
 
         int index = meta->indexOfProperty(key.constData());
         if (index < 0) {
-            qWarning() << QString("ImmutableListModelFunc::assign:assign a non-existed property: %1").arg(iter.key());
+            qWarning() << QString("QImmutable::assign:assign a non-existed property: %1").arg(iter.key());
             iter++;
             continue;
         }
@@ -43,7 +43,7 @@ void QImmutable::assign(QObject *dest, const QVariantMap & source)
 
         if (orig.canConvert<QObject*>()) {
             if (value.type() != QVariant::Map) {
-                qWarning() << QString("ImmutableListModelFunc::assign:expect a QVariantMap property but it is not: %1");
+                qWarning() << QString("QImmutable::assign:expect a QVariantMap property but it is not: %1");
             } else {
                 assign(orig.value<QObject*>(), value.toMap());
             }
@@ -70,7 +70,7 @@ void QImmutable::assign(QObject *dest, const QJSValue &source)
         QByteArray key = iter.name().toLocal8Bit();
         int index = meta->indexOfProperty(key.constData());
         if (index < 0) {
-            qWarning() << QString("ImmutableListModelFunc::assign:assign a non-existed property: %1").arg(iter.name());
+            qWarning() << QString("QImmutable::assign:assign a non-existed property: %1").arg(iter.name());
             continue;
         }
 
@@ -78,7 +78,7 @@ void QImmutable::assign(QObject *dest, const QJSValue &source)
 
         if (orig.canConvert<QObject*>()) {
             if (!iter.value().isObject()) {
-                qWarning() << QString("ImmutableListModelFunc::assign:expect a object property but it is not: %1");
+                qWarning() << QString("QImmutable::assign:expect a object property but it is not: %1");
             } else {
                 assign(orig.value<QObject*>(), iter.value());
             }
