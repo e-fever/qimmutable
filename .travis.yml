@@ -19,11 +19,11 @@ script:
     - source qtci/path.env
     - qt-5.5.1
     - source qt-5.5.1.env
-    - cd tests/immutablelistmodeltests
+    - cd tests/qimmutabltests
     - qpm install
     - qmake
     - make
     - ls
-    - ./immutablelistmodel
-    - valgrind --leak-check=full --show-reachable=yes ./immutablelistmodel QSyncableTests
+    - ./qimmutabletests
+    - valgrind --leak-check=full --show-reachable=yes ./qimmutabletests
   

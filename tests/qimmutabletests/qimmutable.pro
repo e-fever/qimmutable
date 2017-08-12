@@ -1,7 +1,7 @@
 QT       += qml quick testlib
 QT       -= gui
 
-TARGET = immutablelistmodel
+TARGET = qimmutabletests
 CONFIG   += console
 CONFIG   -= app_bundle
 
