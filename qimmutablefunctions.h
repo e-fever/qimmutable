@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QJSValue>
 #include <QVariant>
+#include <string.h>
 
 namespace QImmutable {
 
@@ -73,6 +74,11 @@ namespace QImmutable {
     /// Find out the diff between QVariantMap
 
     QVariantMap diff(const QVariantMap& v1, const QVariantMap& v2);
+
+    template <typename T>
+    bool isShared(const T& v1, const T& v2) {
+        return memcmp(&v1, &v2 , sizeof(T)) == 0;
+    }
 
 }
 

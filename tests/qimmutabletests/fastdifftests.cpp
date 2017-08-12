@@ -91,6 +91,19 @@ void FastDiffTests::test_compare()
 
     {
         ImmutableType1 t1a,t1b;
+
+        QVERIFY(!QImmutable::isShared(t1a,t1b));
+        t1a.setId("3");
+        QVERIFY(!QImmutable::isShared(t1a,t1b));
+        t1b.setId("3");
+        QVERIFY(!QImmutable::isShared(t1a,t1b));
+        t1a = t1b;
+        QVERIFY(QImmutable::isShared(t1a,t1b));
+
+    }
+
+    {
+        ImmutableType1 t1a,t1b;
         v1 = QVariant::fromValue<ImmutableType1>(t1a);
         v2 = QVariant::fromValue<ImmutableType1>(t1b);
 

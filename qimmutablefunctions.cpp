@@ -293,5 +293,6 @@ bool QImmutable::fastCompare(QVariant v1, QVariant v2)
         return false;
     }
 
+    //@TODO FIXME
     return v1 == v2;
 }
