@@ -7,6 +7,7 @@
 #include "priv/qsfastdiffrunneralgo_p.h"
 #include "immutabletype3.h"
 #include "qsfastdiffrunner.h"
+#include "qimmutablelistmodel.h"
 
 template <typename T>
 QVariantList convertList(QList<T> list) {
@@ -144,7 +145,6 @@ void FastDiffTests::test_QSFastDiffRunner()
 
     QSFastDiffRunner<ImmutableType1> runner;
 
-
     QList<QSPatch> patches = runner.compare(previous, current);
 
     if (changes.size() != patches.size()) {
@@ -164,19 +164,37 @@ void FastDiffTests::test_QSFastDiffRunner()
         QVERIFY(expected == real);
     }
 
-    QSListModel model;
-    model.setStorage(convertList(previous));
+    {
+        QSListModel model;
+        model.setStorage(convertList(previous));
 
-    runner.patch(&model, patches);
+        runner.patch(&model, patches);
 
-    QVariant currentList = convertList(current);
-    if (currentList != model.storage()) {
-        qDebug() << "from" << convertList(previous);
-        qDebug() << "to" << currentList;
-        qDebug() << patches;
+        QVariant currentList = convertList(current);
+        if (currentList != model.storage()) {
+            qDebug() << "from" << convertList(previous);
+            qDebug() << "to" << currentList;
+            qDebug() << patches;
+        }
+
+        QVERIFY(currentList == model.storage());
     }
 
-    QVERIFY(currentList == model.storage());
+    {
+        QImmutable::ListModel<ImmutableType1> model;
+        model.setSource(previous);
+        model.setSource(current);
+
+        QVariant currentList = convertList(current);
+
+        if (currentList != model.storage()) {
+            qDebug() << "from" << convertList(previous);
+            qDebug() << "to" << currentList;
+            qDebug() << patches;
+        }
+
+        QVERIFY(currentList == model.storage());
+    }
 
 }
 

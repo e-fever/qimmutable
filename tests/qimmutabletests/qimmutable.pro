@@ -31,7 +31,7 @@ HEADERS += \
     immutabletype3.h
 
 include(vendor/vendor.pri)
-include(../../immutablelistmodel.pri)
+include(../../qimmutable.pri)
 
 DISTFILES += \
     tst_jsonModel.qml \

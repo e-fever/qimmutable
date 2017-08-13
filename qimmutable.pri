@@ -17,7 +17,8 @@ HEADERS += \
     $$PWD/priv/qsimmutablewrapper_p.h \
     $$PWD/priv/qsfastdiffrunneralgo_p.h \
     $$PWD/qsfastdiffrunner.h \
-    $$PWD/qimmutablefunctions.h
+    $$PWD/qimmutablefunctions.h \
+    $$PWD/qimmutablelistmodel.h
 
 SOURCES += \
     $$PWD/qsdiffrunner.cpp \
