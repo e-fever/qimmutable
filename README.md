@@ -1,21 +1,38 @@
-ImmutableListModel - A List Model for Immutable Data Type
+QImmutable - A List Model for Immutable Data Type
 ========================================================
 
 **This project is still under construction**
 
-QImmutable offers an easy to use list model for QML.
-It is a wrapper of immutable data structure in C++/JavaScript.
-It takes an array as input source.
-Whatever the data updated, user should pass a new copy of data to ImmutableListModel.
+QImmutable offers an easy to use ListModel for QML,
+which is a wrapper of immutable data list in C++/JavaScript.
+It just takes an array as input source.
+Whatever the data updated, user just need to pass a new version of data to the ListModel.
 Then it will perform a synchronization by finding out the diff from previous and current snapshot.
 It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm.
 And apply the changes to itself.
 It will guarantee the behaviour is almost identical to the original QML ListModel.
 Such that the UI components could react to the changes correctly.
 
-An immediate benefit of using ImmutableListModel is the simplification of the data pipeline. If you need your UI to respond to changes like insertion/removal correctly, you must update the ListModel by the corresponding method explicitly. ImmutableListModel combines all kinds of update methods into a single way. User doesn’t need to care about their differences and setup data binding by just a single connection.
+An immediate benefit of using QImmutable is the simplification of the data pipeline. If you need your UI to respond to changes like insertion/removal correctly, you must update the ListModel by the corresponding method explicitly. QImmutable combines all kinds of update methods into a single way. User doesn’t need to care about their differences and setup data binding by just a single connection.
 
-Moreover, ImmutableListModel could also be used as a solution for the nested list model.
+Moreover, QImmutable could also be used as a solution for the nested list model.
+
+Example in C++
+
+```
+    QList<CustomImmutableType> source;
+
+    QImmutable::ListModel<CustomImmutableType> listModel;
+    listModel.setSource(source);
+
+    // Insert a new item at the beginning
+
+    source.insert(0, CustomImmutableType());
+
+    listModel.setSource(source); // It will be updated to the latest version of data and generate rowsInserted signal.
+
+```
+
 
 Reference: 
 
