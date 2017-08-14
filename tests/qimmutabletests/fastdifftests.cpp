@@ -29,12 +29,6 @@ FastDiffTests::FastDiffTests(QObject *parent) : QObject(parent)
 
 void FastDiffTests::test_QSImmutable_wrapper()
 {
-    {
-        ImmutableType1 v1, v2;
-        QVERIFY(!v1.isSharedWith(v2));
-        v1 = v2;
-        QVERIFY(v1.isSharedWith(v2));
-    }
 
     {
         QSImmutableWrapper<ImmutableType1> wrapper1;

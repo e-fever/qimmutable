@@ -8,7 +8,7 @@ class QSImmutableWrapper {
 
 public:
     inline bool isShared(const T& v1, const T& v2) const {
-        return v1.isSharedWith(v2);
+        return QImmutable::isShared(v1, v2);
     }
 
     inline QVariantMap convert(const T& object) {

@@ -124,7 +124,8 @@ void IntegrationTests::test_assign()
 
     /* assign(QObject = null, QJSValue) */
     {
-        QString content = QtShell::cat(QString(SRCDIR) + "/SampleData1.json");
+        qDebug() << "assign(QObject = null, QJSValue)";
+        QString content = QtShell::cat(QtShell::realpath_strip(SRCDIR, "/SampleData1.json"));
         QJSValue value = engine.evaluate(content);
 
         QImmutable::assign(0, value);

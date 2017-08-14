@@ -19,8 +19,6 @@ public:
     ImmutableType1 &operator=(const ImmutableType1 &);
     ~ImmutableType1();
 
-    bool isSharedWith(const ImmutableType1& other) const;
-
     QString id() const;
 
     void setId(QString id);

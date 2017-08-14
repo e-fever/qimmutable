@@ -59,8 +59,3 @@ void ImmutableType1::setValue(const QString &value)
 {
     data->value = value;
 }
-
-bool ImmutableType1::isSharedWith(const ImmutableType1 &other) const
-{
-    return data == other.data;
-}
