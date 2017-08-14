@@ -81,7 +81,7 @@ void IntegrationTests::test_assign()
 {
     QQmlApplicationEngine engine;
 
-    engine.load(QUrl(QString(SRCDIR) + "/SampleData1.qml"));
+    engine.load(QUrl(QtShell::realpath_strip(SRCDIR, "/SampleData1.qml")));
     Automator automator(&engine);
 
     QObject* root = automator.findObject("Root");
@@ -146,7 +146,7 @@ void IntegrationTests::test_get()
 {
     QQmlApplicationEngine engine;
 
-    engine.load(QUrl(QString(SRCDIR) + "/SampleData1.qml"));
+    engine.load(QUrl(QtShell::realpath_strip(SRCDIR, "/SampleData1.qml")));
     Automator automator(&engine);
 
     QObject* root = automator.findObject("Root");
@@ -202,7 +202,7 @@ void IntegrationTests::test_pick()
 {
     QQmlApplicationEngine engine;
 
-    engine.load(QUrl(QString(SRCDIR) + "/SampleData1.qml"));
+    engine.load(QUrl(QtShell::realpath_strip(SRCDIR, "/SampleData1.qml")));
     Automator automator(&engine);
 
     QObject* root = automator.findObject("Root");
@@ -244,7 +244,7 @@ void IntegrationTests::test_omit()
 {
     QQmlApplicationEngine engine;
 
-    engine.load(QUrl(QString(SRCDIR) + "/SampleData1.qml"));
+    engine.load(QUrl(QtShell::realpath_strip(SRCDIR, "/SampleData1.qml")));
     Automator automator(&engine);
 
     QObject* root = automator.findObject("Root");

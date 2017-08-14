@@ -3,7 +3,7 @@ QImmutable - A List Model for Immutable Data Type
 
 **This project is still under construction**
 
-QImmutable offers an easy to use ListModel for QML,
+QImmutable provides an easy to use ListModel for QML,
 which is a wrapper of immutable data list in C++/JavaScript.
 It just takes an array as input source.
 Whatever the data updated, user just need to pass a new version of data to the ListModel.
@@ -29,8 +29,9 @@ Example in C++
 
     source.insert(0, CustomImmutableType());
 
-    listModel.setSource(source); // It will be updated to the latest version of data and generate rowsInserted signal.
-
+    listModel.setSource(source);
+    // It will be updated to the latest version
+    // Emit rowsInserted() signal.
 ```
 
 
@@ -41,26 +42,36 @@ Reference:
 How does it work?
 -------------
 
-![Workflow](https://raw.githubusercontent.com/benlau/qsyncable/master/docs/qsyncable-workflow.png)
+![Workflow](https://raw.githubusercontent.com/benlau/junkcode/master/docs/qimmutable-workflow.png)
 
 **DiffRunner (QSDiffRunner)** compares two QVariantList to produce a patch for transforming one of a list to another list with minimum no. of steps. The result can be applied on a QSListModel. DiffRunner uses an average O(n) algorithm and therefore it should be fast enough for regular UI application.
 
 **ListModel (QSListModel)** is an implementation of QAbstactItemModel. It stores data in a list of QVariantMap. It will emit insert, remove, move and data changed signals according to the patch applied.
 
-QSyncable provides the two classes above for a user to convert their own data structure to a QML friendly list model. Usually, there are several ways to update a list model. QSyncable combines all of the update methods into a single process - patching.
+QImmutable provides the two classes above for a user to convert their own data structure to a QML friendly list model. Usually, there are several ways to update a list model. QImmutable combines all of the update methods into a single process - patching.
 
 Whatever the data source has been changed, regardless of update method, the user converts it into a QVariantList and pass it to DiffRunner to compare with the current snapshot. Then apply the generated patch on QSListModel. UI component will be refreshed according to the emitted signals from QSListModel.
 
-The diagram below shows an example application architecture using QSyncable:
+The diagram below shows an example application architecture using QImmutable:
 
 ![QSyncable Application Architecture](https://raw.githubusercontent.com/benlau/qsyncable/master/docs/qsyncable-application-architecture-example.png)
 
-In QSyncable application, ListModel only keeps a copy of the data. it is meaningless for UI components to modify it. Instead, UI components should ask to update the data source and trigger synchronization afterwards. The component for “updates” and “queries” is in fact separated. (More information in this [article](https://medium.com/@benlaud/action-dispatcher-design-pattern-for-qml-c350b1d2a7e7#.mi3b8hbuv) )
+In QImmutable application, ListModel only keeps a copy of the data. it is meaningless for UI components to modify it. Instead, UI components should ask to update the data source and trigger synchronization afterwards. The component for “updates” and “queries” is in fact separated. (More information in this [article](https://medium.com/@benlaud/action-dispatcher-design-pattern-for-qml-c350b1d2a7e7#.mi3b8hbuv) )
+
+Immutable and Implicit Sharing
+------------------------------
+
+An immutable object is an object whose state can not be modified after it is created. With a technique called copy-on-write, when a user asks the system to copy an immutable object, it will create a new reference that still pointing to the same object. Once a user attempts to modify the object, it will make a copy of the entire object and applies the modification to that. The other users are unaffected. It provides a fast and low-cost mechanism for copying data which will not be changed unexpectedly. It is an ideal data structure for data sharing between thread.
+
+Qt’s Implicitly Shared Class is also a kind of immutable data structure supports copy-on-write. QImmutable makes use of the Implicitly Shared Class mechanism to discover unchanged data quickly.
+
+TODO - Instruction
+
 
 Design Principle - Separation of "updates" and "queries"
 ----------
 
-QSyncable is designed to solve a fundamental problem of C++ & QML application: How to share data between C++ and QML?
+QImmutable is designed to solve a fundamental problem of C++ & QML application: How to share data between C++ and QML?
 
 QObject list model is definitely a bad idea. It is terrible to manage their life cycle and ownership (QML / C++ scope). You should be aware of garbage collection in your QObject list model even it is written in C++.
 
@@ -73,13 +84,13 @@ It has no any advantage of using QObject list model if you use other component f
 
 Moreover, it is not necessary to use a variant list model as a central data source. You may use any data structure you like. Leave variant list model for presentation only.
 
-QSyncable takes a step further. It simplifies the process to update the variant list model from a data source by combining insertion, removal, move and change operations into a single process - patching, while maintaining the correctness of UI response. It solves not only the problem of C++ and QML data sharing, but also a solution of nested list model within QML.
+QImmutable takes a step further. It simplifies the process to update the variant list model from a data source by combining insertion, removal, move and change operations into a single process - patching, while maintaining the correctness of UI response. It solves not only the problem of C++ and QML data sharing, but also a solution of nested list model within QML.
 
 Reference:
 
 1. [What the Flux? (On Flux, DDD, and CQRS) — Jack Hsu](http://jaysoo.ca/2015/02/06/what-the-flux/)
 
-Why use QSyncable for C++?
+Why use QImmutable for C++?
 --------------------------
 
 (1) The function of QQmlListProperty is limited.
@@ -99,13 +110,13 @@ Once you find that your data is too big for processing, you may pass it to a thr
 
 (4) Works for any data structure
 
-You just need to write a conversion function, QSyncable will do the rest for you.
+You just need to write a conversion function, QImmutable will do the rest for you.
 
 (5) Simple update method
 
 No matter what kind of update happen, just convert your data structure to QVariantList, pass it to DiffRunner, then patch a model.
 
-Why use QSyncable for QML?
+Why use QImmutable for QML?
 --------------------------
 
 (1) Use JsonListModel to wrap your Javascript object.

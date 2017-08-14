@@ -3,7 +3,7 @@
   "description": "",
   "dependencies": [
     "com.github.benlau.testable@0.1.2",
-    "com.github.benlau.qtshell@0.3.2"
+    "com.github.benlau.qtshell@0.4.3"
   ],
   "license": "NONE",
   "pri_filename": "",
