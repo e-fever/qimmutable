@@ -81,7 +81,9 @@ void IntegrationTests::test_assign()
 {
     QQmlApplicationEngine engine;
 
-    engine.load(QUrl(QtShell::realpath_strip(SRCDIR, "/SampleData1.qml")));
+    QUrl url = QUrl(QtShell::realpath_strip(SRCDIR, "SampleData1.qml"));
+    qDebug() << url;
+    engine.load(url);
     Automator automator(&engine);
 
     QObject* root = automator.findObject("Root");

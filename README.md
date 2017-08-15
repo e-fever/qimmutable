@@ -1,17 +1,11 @@
-QImmutable - A List Model for Immutable Data Type
+QImmutable - An Immutable List Model
 ========================================================
 
 **This project is still under construction**
 
-QImmutable provides an easy to use ListModel for QML,
-which is a wrapper of immutable data list in C++/JavaScript.
-It just takes an array as input source.
-Whatever the data updated, user just need to pass a new version of data to the ListModel.
-Then it will perform a synchronization by finding out the diff from previous and current snapshot.
-It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm.
-And apply the changes to itself.
-It will guarantee the behaviour is almost identical to the original QML ListModel.
-Such that the UI components could react to the changes correctly.
+QImmutable provides an easy to use ListModel for QML. It doesn’t have methods like “insert”/“remove”/“move”.  The only way to update the ListModel is the `source` property setter. Whatever an new version of data is available, it will perform a synchronization by comparing with the previous version then finding out the diff. It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm. And apply the changes to itself. It will guarantee the behaviour is almost identical to the original QML ListModel. Such that the UI components could react to the changes correctly.
+
+The data in QImmutable must be immutable (implicitly shared class). It could avoid unnecessary clone of data for more effective memory management. Moreover, determine does the data changed between immutable objects is as fast as to compare pointer. QImmutable make sure of immutable’s feature to achieve a faster synchonization.
 
 An immediate benefit of using QImmutable is the simplification of the data pipeline. If you need your UI to respond to changes like insertion/removal correctly, you must update the ListModel by the corresponding method explicitly. QImmutable combines all kinds of update methods into a single way. User doesn’t need to care about their differences and setup data binding by just a single connection.
 
@@ -34,19 +28,18 @@ Example in C++
     // Emit rowsInserted() signal.
 ```
 
-
 Reference: 
 
 1. [Efficient models for QML with QSyncable - Google Slides](https://docs.google.com/presentation/d/13pkRav2Fks_AKTXfKtGTyBuc_RmkZGiDRQZTr4usQFk/pub?start=false&loop=false&delayms=3000&slide=id.p)
 
 How does it work?
--------------
+-----------------
 
 ![Workflow](https://raw.githubusercontent.com/benlau/junkcode/master/docs/qimmutable-workflow.png)
 
-**DiffRunner (QSDiffRunner)** compares two QVariantList to produce a patch for transforming one of a list to another list with minimum no. of steps. The result can be applied on a QSListModel. DiffRunner uses an average O(n) algorithm and therefore it should be fast enough for regular UI application.
+**DiffRunner (QSDiffRunner)** compares two QList<T> with immutable type to produce a patch for transforming one of a list to another list with minimum no. of steps. The result can be applied on a VariantListModel. DiffRunner uses an average O(n) algorithm and therefore it should be fast enough for regular UI application.
 
-**ListModel (QSListModel)** is an implementation of QAbstactItemModel. It stores data in a list of QVariantMap. It will emit insert, remove, move and data changed signals according to the patch applied.
+**VariantListModel** is an implementation of QAbstactItemModel. It stores data in a list of QVariantMap. It will emit insert, remove, move and data changed signals according to the patch applied.
 
 QImmutable provides the two classes above for a user to convert their own data structure to a QML friendly list model. Usually, there are several ways to update a list model. QImmutable combines all of the update methods into a single process - patching.
 
