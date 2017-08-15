@@ -50,6 +50,28 @@ namespace QImmutable {
         }
     }
 
+    template <typename T>
+    void assignOnGadget(QVariantMap& dest, const T& source) {
+
+        const QMetaObject meta = T::staticMetaObject;
+
+        for (int i = 0 ; i < meta.propertyCount(); i++) {
+            const QMetaProperty property = meta.property(i);
+            QString p = property.name();
+
+            QVariant value = property.readOnGadget(&source);
+
+            if (value.canConvert<QObject*>()) {
+                QVariantMap map;
+                assign(map, value.value<QObject*>()); // nested properties is not supported yet
+                value = map;
+            }
+
+            dest[p] = value;
+        }
+
+    }
+
     /// Gets the value at path of object. If the path is not found, the defaultValue is returned.
     /*
      Example:

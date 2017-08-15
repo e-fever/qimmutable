@@ -114,15 +114,18 @@ void IntegrationTests::test_assign()
     QVERIFY(root->property("value4").value<QObject*>()->property("value1").toInt() == 32);
 
     /* assign(QObject, QJSvalue)*/
-    QString content = QtShell::cat(QString(SRCDIR) + "/SampleData1.json");
-    QJSValue value = engine.evaluate(content);
+    {
+        qDebug() << "assign(QObject, QJSvalue)";
+        QString content = QtShell::cat(QString(SRCDIR) + "/SampleData1.json");
+        QJSValue value = engine.evaluate(content);
 
-    QImmutable::assign(root, value);
+        QImmutable::assign(root, value);
 
-    QCOMPARE(root->property("value1").toInt(), 10);
-    QVERIFY(root->property("value2").toString() == "11");
-    QVERIFY(root->property("value3").toBool() == false);
-    QCOMPARE(root->property("value4").value<QObject*>()->property("value1").toInt(), 21);
+        QCOMPARE(root->property("value1").toInt(), 10);
+        QVERIFY(root->property("value2").toString() == "11");
+        QVERIFY(root->property("value3").toBool() == false);
+        QCOMPARE(root->property("value4").value<QObject*>()->property("value1").toInt(), 21);
+    }
 
     /* assign(QObject = null, QJSValue) */
     {
@@ -142,6 +145,19 @@ void IntegrationTests::test_assign()
         QImmutable::assignOnGadget(target, data);
         QCOMPARE(target.id(), QString("3"));
         QCOMPARE(target.value(), QString("4"));
+    }
+
+    /* assignOnGadget(QVariantMap, gadget) */
+    {
+        ImmutableType1 source;
+        source.setId("3");
+        source.setValue("4");
+
+        QVariantMap target;
+        QImmutable::assignOnGadget(target, source);
+        QCOMPARE(target.size(), 2);
+        QCOMPARE(target["id"].toString(), QString("3"));
+
     }
 }
 
