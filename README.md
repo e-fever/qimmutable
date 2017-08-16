@@ -3,30 +3,35 @@ QImmutable - An Immutable List Model
 
 **This project is still under construction**
 
-QImmutable provides an easy to use ListModel for QML. It doesn’t have methods like “insert”/“remove”/“move”.  The only way to update the ListModel is the `source` property setter. Whatever an new version of data is available, it will perform a synchronization by comparing with the previous version then finding out the diff. It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm. And apply the changes to itself. It will guarantee the behaviour is almost identical to the original QML ListModel. Such that the UI components could react to the changes correctly.
+QImmutable provides an easy to use ListModel for QML. It doesn’t have methods like "insert()"/"remove()"/"move()".  The only way to update the ListModel is the `source` property setter.
+
+Example in C++
+
+```C++
+    QList<CustomImmutableType> input;
+
+    QImmutable::ListModel<CustomImmutableType> listModel;
+
+    /* Set initial data*/
+    listModel.setSource(input);
+
+    /* Insert a new item at the beginning */
+
+    input.insert(0, CustomImmutableType());
+
+    listModel.setSource(input);
+
+    // It will be updated to the latest version
+    // and emit rowsInserted() signal.
+```
+
+Whatever an new version of data is available, it will perform a synchronization by comparing with the previous version then finding out the diff. It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm. And apply the changes to itself. It will guarantee the behaviour is almost identical to the original QML ListModel. Such that the UI components could react to the changes correctly.
 
 The data in QImmutable must be immutable (implicitly shared class). It could avoid unnecessary clone of data for more effective memory management. Moreover, determine does the data changed between immutable objects is as fast as to compare pointer. QImmutable make sure of immutable’s feature to achieve a faster synchonization.
 
 An immediate benefit of using QImmutable is the simplification of the data pipeline. If you need your UI to respond to changes like insertion/removal correctly, you must update the ListModel by the corresponding method explicitly. QImmutable combines all kinds of update methods into a single way. User doesn’t need to care about their differences and setup data binding by just a single connection.
 
 Moreover, QImmutable could also be used as a solution for the nested list model.
-
-Example in C++
-
-```
-    QList<CustomImmutableType> source;
-
-    QImmutable::ListModel<CustomImmutableType> listModel;
-    listModel.setSource(source);
-
-    // Insert a new item at the beginning
-
-    source.insert(0, CustomImmutableType());
-
-    listModel.setSource(source);
-    // It will be updated to the latest version
-    // Emit rowsInserted() signal.
-```
 
 Reference: 
 
@@ -132,8 +137,9 @@ QSDiffRunner will ignore the insertion, removal, and move checking if the key fi
 
 | Condition                    | Time Complexity             |
 |------------------------------|-----------------------------|
-| Insert to an empty list      | O(1)                        |
+| Insert an empty list         | O(1)                        |
 | Clear the list               | O(1)                        |
+| Unchanged list               | O(1)                        |
 | Insert items to any position | O(n)                        |
 | Remove a block of items      | O(n)                        |
 | Move a block of items        | O(n)                        |
