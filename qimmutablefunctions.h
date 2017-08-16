@@ -116,7 +116,6 @@ namespace QImmutable {
 
     QVariantMap pick(QVariantMap source, const QVariantMap& paths);
 
-
     /// The opposite of pick(), this method creates an QVariantMap composed of the own properties that are not omitted.
     /*
      If a property contains QObject pointer, it will be converted to QVariantMap.
@@ -137,6 +136,12 @@ namespace QImmutable {
         return memcmp(&v1, &v2 , sizeof(T)) == 0;
     }
 
+    template <typename T>
+    QVariantMap toMap(const T& t) {
+        QVariantMap res;
+        assignOnGadget(res, t);
+        return res;
+    }
 }
 
 #endif // QSYNCABLEFUNCTIONS_H

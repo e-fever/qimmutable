@@ -86,6 +86,8 @@ void IntegrationTests::test_assign()
     engine.load(url);
     Automator automator(&engine);
 
+    qDebug() << engine.rootObjects();
+    QVERIFY(engine.rootObjects().first());
     QObject* root = automator.findObject("Root");
     QVERIFY(root);
 

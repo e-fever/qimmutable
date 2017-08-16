@@ -25,7 +25,7 @@ Example in C++
     // and emit rowsInserted() signal.
 ```
 
-Whatever an new version of data is available, it will perform a synchronization by comparing with the previous version then finding out the diff. It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm. And apply the changes to itself. It will guarantee the behaviour is almost identical to the original QML ListModel. Such that the UI components could react to the changes correctly.
+When the setter is called, it will perform a synchronization by comparing with the previous input then finding out the diff. It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm. And apply the changes to itself. It will guarantee the behaviour is almost identical to the original QML ListModel. Such that the UI components could react to the changes correctly.
 
 The data in QImmutable must be immutable (implicitly shared class). It could avoid unnecessary clone of data for more effective memory management. Moreover, determine does the data changed between immutable objects is as fast as to compare pointer. QImmutable make sure of immutable’s feature to achieve a faster synchonization.
 
