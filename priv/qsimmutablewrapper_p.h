@@ -1,6 +1,8 @@
 #pragma once
 #include <QVariantMap>
 #include <QMetaMethod>
+#include <QJSValue>
+#include <QJSValueIterator>
 #include "qimmutablefunctions.h"
 
 template <typename T>
@@ -90,6 +92,69 @@ public:
             return QVariantMap();
         }
         return diff(v1, v2);
+    }
+
+    bool hasKey() {
+        return !keyField.isNull();
+    }
+
+    QString key(const QVariantMap& object) {
+        if (keyField.isNull()) {
+            return QString();
+        }
+
+        QString res;
+        QVariant value = object[keyField];
+        if (value.type() == QVariant::Int) {
+            res = QString::number(value.toInt());
+        } else if (value.type() == QVariant::String) {
+            res = value.toString();
+        }
+        return res;
+    }
+
+    QString keyField;
+
+};
+
+
+template<>
+class QSImmutableWrapper<QJSValue> {
+public:
+    inline bool isShared(const QJSValue& v1, const QJSValue& v2) const {        
+        if (v1.isNull() || v1.isUndefined() || v2.isNull() || v2.isUndefined()) {
+            // Null is not considered as shared
+            return false;
+        }
+        return v1.strictlyEquals(v2);
+    }
+
+    inline QVariantMap convert(const QJSValue& object) {
+        QVariantMap data;
+        if (object.isObject()) {
+
+            QJSValueIterator it(object);
+            while (it.hasNext()) {
+                it.next();
+                data[it.name()] = it.value().toVariant();
+            }
+        }
+
+        return data;
+    }
+
+    QVariantMap diff(const QJSValue& v1, const QJSValue& v2) {
+        return QImmutable::diff(convert(v1), convert(v2));
+    }
+
+    QVariantMap fastDiff(const QJSValue& v1, const QJSValue& v2) {
+        if (!isShared(v1, v2)) {
+            return QVariantMap();
+        }
+        auto prev = convert(v1);
+        auto current = convert(v2);
+
+        return QImmutable::diff(prev, current);
     }
 
     bool hasKey() {

@@ -1,3 +1,4 @@
+#include <QQmlApplicationEngine>
 #include <QTest>
 #include <qslistmodel.h>
 #include "immutabletype1.h"
@@ -77,6 +78,24 @@ void FastDiffTests::test_QSImmutable_wrapper()
         wrapper.keyField = "value1";
         QVERIFY(wrapper.hasKey());
         QCOMPARE(wrapper.key(v1), QString::number(10));
+    }
+
+    {
+        QQmlApplicationEngine engine;
+        QSImmutableWrapper<QJSValue> wrapper;
+        wrapper.keyField = "id";
+        QJSValue v1, v2;
+        QVERIFY(!wrapper.isShared(v1, v2));
+        QVariantMap data;
+        data["value1"] = 1;
+        data["value2"] = "2";
+        v1 = engine.toScriptValue(data);
+        v2 = engine.toScriptValue(data);
+        QVERIFY(!wrapper.isShared(v1, v2));
+        v1 = v2;
+        QVERIFY(wrapper.isShared(v1, v2));
+
+
     }
 }
 

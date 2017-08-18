@@ -81,7 +81,8 @@ void IntegrationTests::test_assign()
 {
     QQmlApplicationEngine engine;
 
-    QUrl url = QUrl(QtShell::realpath_strip(SRCDIR, "SampleData1.qml"));
+    QString qmlFile = QtShell::realpath_strip(SRCDIR, "SampleData1.qml");
+    QUrl url = QUrl::fromLocalFile(qmlFile);
     qDebug() << url;
     engine.load(url);
     Automator automator(&engine);
