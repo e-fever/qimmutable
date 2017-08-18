@@ -1,11 +1,11 @@
 #pragma once
-#include <qslistmodel.h>
+#include <qimmutablevariantlistmodel.h>
 #include <qsfastdiffrunner.h>
 
 namespace QImmutable {
 
     template <typename T>
-    class ListModel: public QSListModel {
+    class ListModel: public VariantListModel {
     public:
         ListModel() {
         }

@@ -18,7 +18,7 @@ IntegrationTests::IntegrationTests(QObject *parent) : QObject(parent)
 
 void IntegrationTests::sortFilterProxyModel()
 {
-    QSListModel listModel;
+    VariantListModel listModel;
 
     QVariantList list;
 
@@ -147,6 +147,7 @@ void IntegrationTests::test_assign()
 
     /* assignOnGadget(gadget, QVariantMap) */
     {
+        qDebug() << "assignOnGadget(gadget, QVariantMap)";
         QVariantMap data;
         data["id"] = "3";
         data["value"] = "4";
@@ -158,6 +159,8 @@ void IntegrationTests::test_assign()
 
     /* assignOnGadget(QVariantMap, gadget) */
     {
+        qDebug() << "assignOnGadget(QVariantMap, gadget)";
+
         ImmutableType1 source;
         source.setId("3");
         source.setValue("4");

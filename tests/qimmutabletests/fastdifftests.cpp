@@ -1,6 +1,6 @@
 #include <QQmlApplicationEngine>
 #include <QTest>
-#include <qslistmodel.h>
+#include <qimmutablevariantlistmodel.h>
 #include "immutabletype1.h"
 #include "immutabletype2.h"
 #include "fastdifftests.h"
@@ -175,22 +175,6 @@ void FastDiffTests::test_QSFastDiffRunner()
             qDebug() << "Actual" << patches;
         }
         QVERIFY(expected == real);
-    }
-
-    {
-        QSListModel model;
-        model.setStorage(convertList(previous));
-
-        runner.patch(&model, patches);
-
-        QVariant currentList = convertList(current);
-        if (currentList != model.storage()) {
-            qDebug() << "from" << convertList(previous);
-            qDebug() << "to" << currentList;
-            qDebug() << patches;
-        }
-
-        QVERIFY(currentList == model.storage());
     }
 
     {

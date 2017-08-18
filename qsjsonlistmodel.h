@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QQmlParserStatus>
-#include "qslistmodel.h"
+#include "qimmutablevariantlistmodel.h"
 
 /* QSJsonListModel is a data model that combine QSListModel and QSDiffRunner
  * into a single class. It may take a Javascript array object as source input,
@@ -10,7 +10,7 @@
  * the diff.
  */
 
-class QSJsonListModel : public QSListModel, public QQmlParserStatus
+class QSJsonListModel : public QImmutable::VariantListModel, public QQmlParserStatus
 {
     Q_OBJECT
     Q_PROPERTY(QString keyField READ keyField WRITE setKeyField NOTIFY keyFieldChanged)

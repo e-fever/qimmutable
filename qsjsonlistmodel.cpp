@@ -63,7 +63,7 @@ It will emit signals of insertion, removal and moving automatically.
   If it is not found, it will return -1.
  */
 
-QSJsonListModel::QSJsonListModel(QObject *parent) : QSListModel(parent)
+QSJsonListModel::QSJsonListModel(QObject *parent) : VariantListModel(parent)
 {
     componentCompleted = false;
 }

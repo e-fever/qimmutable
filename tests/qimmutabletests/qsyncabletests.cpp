@@ -6,6 +6,8 @@
 #include "priv/qstree.h"
 #include "math.h"
 
+using namespace QImmutable;
+
 static QStringList convert(const QVariantList& list) {
     QStringList res;
 
@@ -37,7 +39,7 @@ void run() {
     QVariantList tList = convert(to.split(","));
 
 
-    QSListModel listModel;
+    QImmutable::VariantListModel listModel;
 
     listModel.setStorage(fList);
 
@@ -402,7 +404,7 @@ void QSyncableTests::diffRunner()
         QVERIFY(expected == real);
     }
 
-    QSListModel* model = new QSListModel();
+    QImmutable::VariantListModel* model = new QImmutable::VariantListModel();
 
     model->setStorage(previous);
     QVERIFY(runner.patch(model, result));
@@ -650,7 +652,7 @@ void QSyncableTests::diffRunner_noKeyField()
     QList<QSPatch> patches = runner.compare(from, to);
 
 
-    QSListModel listModel;
+    VariantListModel listModel;
     listModel.setStorage(from);
     runner.patch(&listModel, patches);
 
@@ -702,7 +704,7 @@ void QSyncableTests::diffRunner_invalidKey()
     QList<QSPatch> patches = runner.compare(from, to);
     QCOMPARE(patches.size() , 2);
 
-    QSListModel listModel;
+    VariantListModel listModel;
     listModel.setStorage(from);
     runner.patch(&listModel, patches);
 
@@ -751,7 +753,7 @@ void QSyncableTests::diffRunner_random()
     qDebug() << "from" << convert(from).join(",");
     qDebug() << "to" << convert(to).join(",");
 
-    QSListModel listModel;
+    VariantListModel listModel;
 
     listModel.setStorage(from);
 
@@ -798,7 +800,7 @@ void QSyncableTests::diffRunner_randomMove()
     qDebug() << "from" << convert(from).join(",");
     qDebug() << "to" << convert(to).join(",");
 
-    QSListModel listModel;
+    VariantListModel listModel;
 
     listModel.setStorage(from);
 
@@ -834,7 +836,7 @@ void QSyncableTests::diffRunner_complex()
     fromList = convert(from);
     toList = convert(to);
 
-    QSListModel listModel;
+    VariantListModel listModel;
     listModel.setStorage(fromList);
 
     QSDiffRunner runner;
@@ -876,7 +878,7 @@ void QSyncableTests::diffRunner_complex_data()
 
 void QSyncableTests::listModel_insert()
 {
-    QSListModel* model = new QSListModel();
+    VariantListModel* model = new VariantListModel();
 
     QVariantList expected;
     QVariantMap a,b,c,d;
@@ -899,7 +901,7 @@ void QSyncableTests::listModel_insert()
 
 void QSyncableTests::listModel_roleNames()
 {
-    QSListModel* model = new QSListModel();
+    VariantListModel* model = new VariantListModel();
     QCOMPARE(model->roleNames().size(), 0);
     delete model;
 
@@ -911,24 +913,24 @@ void QSyncableTests::listModel_roleNames()
     item2 = item;
     item2["order"] = 3;
 
-    model = new QSListModel();
+    model = new VariantListModel();
     model->append(item);
     QCOMPARE(model->roleNames().size(), 2);
     delete model;
 
-    model = new QSListModel();
+    model = new VariantListModel();
     model->insert(0, item);
     QCOMPARE(model->roleNames().size(), 2);
     delete model;
 
-    model = new QSListModel();
+    model = new VariantListModel();
     model->insert(0, QVariantList() << item << item);
     QCOMPARE(model->roleNames().size(), 2);
     delete model;
 
     QVariantList list;
     list.append(item);
-    model = new QSListModel();
+    model = new VariantListModel();
     model->setStorage(list);
     QCOMPARE(model->roleNames().size(), 2);
 

@@ -3,7 +3,7 @@ QImmutable - An Immutable List Model
 
 **This project is still under construction**
 
-QImmutable provides an easy to use ListModel for QML. It doesn’t have methods like "insert()"/"remove()"/"move()".  The only way to update the ListModel is the `source` property setter.
+QImmutable provides a simplified ListModel for QML. It doesn’t have methods like "insert()” / "remove()” / "move()". The only way to update the ListModel is the `source` property setter. And it could still emit signals like rowsInserted / rowsRemoved for UI to react to changes correctly.
 
 Example in C++
 
@@ -25,13 +25,17 @@ Example in C++
     // and emit rowsInserted() signal.
 ```
 
-When the setter is called, it will perform a synchronization by comparing with the previous input then finding out the diff. It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm. And apply the changes to itself. It will guarantee the behaviour is almost identical to the original QML ListModel. Such that the UI components could react to the changes correctly.
+When the setter is called, it will perform a synchronization by comparing with the previous input then finding out the diff. It will generate a list of change operations like insertion, removal and move by an average O(n) algorithm. And apply the changes to itself. It will guarantee the behaviour is almost identical to the original QML ListModel.
 
 The data in QImmutable must be immutable (implicitly shared class). It could avoid unnecessary clone of data for more effective memory management. Moreover, determine does the data changed between immutable objects is as fast as to compare pointer. QImmutable make sure of immutable’s feature to achieve a faster synchonization.
 
-An immediate benefit of using QImmutable is the simplification of the data pipeline. If you need your UI to respond to changes like insertion/removal correctly, you must update the ListModel by the corresponding method explicitly. QImmutable combines all kinds of update methods into a single way. User doesn’t need to care about their differences and setup data binding by just a single connection.
+An immediate benefit of using QImmutable is the simplification of the data pipeline. If you need your UI to respond to changes like insertion/removal correctly, you must update the ListModel by the corresponding method explicitly. QImmutable combines all kinds of update methods into a single way. User doesn’t need to care about their differences and setup data binding by just a single connection. And it could allow to process a massive amount of data from another thread.
 
-Moreover, QImmutable could also be used as a solution for the nested list model.
+Moreover, QImmutable's ListModel is also an ideal solution as a nested list model.
+
+Features
+
+1.
 
 Reference: 
 
@@ -41,6 +45,8 @@ How does it work?
 -----------------
 
 ![Workflow](https://raw.githubusercontent.com/benlau/junkcode/master/docs/qimmutable-workflow.png)
+
+The QImmutable::ListModel consists of two main components: DiffRunner and VariantListModel:
 
 **DiffRunner (QSDiffRunner)** compares two QList<T> with immutable type to produce a patch for transforming one of a list to another list with minimum no. of steps. The result can be applied on a VariantListModel. DiffRunner uses an average O(n) algorithm and therefore it should be fast enough for regular UI application.
 
@@ -97,7 +103,7 @@ Why use QImmutable for C++?
 
 You need to understand how QAbstactItemModel works and emit insert, remove, move and update signals correctly. Otherwise, UI components like ListView will not react correctly.
 
-(3) Use implicit sharing class over QObject
+(3) Use immutable type / implicit sharing class over QObject
 
 QObject is not copyable and you need to manage its life cycle. It is not really a good solution as a data storage class.
 
@@ -106,18 +112,14 @@ Once you find that your data is too big for processing, you may pass it to a thr
 
 [Implicit Sharing | Qt Core 5.5](http://doc.qt.io/qt-5/implicit-sharing.html)
 
-(4) Works for any data structure
-
-You just need to write a conversion function, QImmutable will do the rest for you.
-
-(5) Simple update method
+(4) Simple update method
 
 No matter what kind of update happen, just convert your data structure to QVariantList, pass it to DiffRunner, then patch a model.
 
 Why use QImmutable for QML?
 --------------------------
 
-(1) Use JsonListModel to wrap your Javascript object.
+(1) Use ImmutableListModel to wrap your Javascript object.
 
 (2) Able to work as a nested list model.
 

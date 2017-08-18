@@ -4,8 +4,9 @@
    Web: https://github.com/benlau/qsyncable
 */
 #include <QtCore>
-#include "qslistmodel.h"
+#include "qimmutablevariantlistmodel.h"
 
+using namespace QImmutable;
 
 /*! \class QSPatchable
     \inmodule QSyncable
@@ -46,7 +47,7 @@ and it will emit insert, remove, move and data changed signals according to the 
 
  */
 
-QSListModel::QSListModel(QObject *parent) :
+VariantListModel::VariantListModel(QObject *parent) :
     QAbstractListModel(parent)
 {
 }
@@ -56,7 +57,7 @@ QSListModel::QSListModel(QObject *parent) :
   Returns no. of items in this list model
  */
 
-int QSListModel::rowCount(const QModelIndex &parent) const
+int VariantListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return count();
@@ -68,7 +69,7 @@ int QSListModel::rowCount(const QModelIndex &parent) const
 
   Note: If you do not have a value to return, return an invalid QVariant instead of returning 0.
  */
-QVariant QSListModel::data(const QModelIndex &index, int role) const
+QVariant VariantListModel::data(const QModelIndex &index, int role) const
 {
     if (index.row() < 0 || index.row() >= m_storage.size())
         return QVariant();
@@ -89,7 +90,7 @@ QVariant QSListModel::data(const QModelIndex &index, int role) const
 
  */
 
-void QSListModel::append(const QVariantMap &value)
+void VariantListModel::append(const QVariantMap &value)
 {
     if (m_roles.isEmpty()) {
         setRoleNames(value);
@@ -106,7 +107,7 @@ void QSListModel::append(const QVariantMap &value)
   Inserts an item at index position.
 
  */
-void QSListModel::insert(int index, const QVariantMap &value)
+void VariantListModel::insert(int index, const QVariantMap &value)
 {
     if (m_roles.isEmpty()) {
         setRoleNames(value);
@@ -122,7 +123,7 @@ void QSListModel::insert(int index, const QVariantMap &value)
 
     Returns the index position of the first occurrence of the byte array ba in this byte array,
  */
-void QSListModel::insert(int index, const QVariantList &value)
+void VariantListModel::insert(int index, const QVariantList &value)
 {
     if (value.count() == 0) {
         return;
@@ -166,7 +167,7 @@ void QSListModel::insert(int index, const QVariantList &value)
     Moves n items from one position to another.
  */
 
-void QSListModel::move(int from, int to, int count)
+void VariantListModel::move(int from, int to, int count)
 {
 
     if (from > to) {
@@ -217,7 +218,7 @@ void QSListModel::move(int from, int to, int count)
 
  */
 
-void QSListModel::clear()
+void VariantListModel::clear()
 {
     if (m_storage.isEmpty())
         return;
@@ -234,7 +235,7 @@ void QSListModel::clear()
     Deletes the content at index from the model. You may specific the no. of items to be removed by count argument.
  */
 
-void QSListModel::remove(int i, int count)
+void VariantListModel::remove(int i, int count)
 {
     if (count < 1 || i + count > m_storage.size()) {
         return;
@@ -258,7 +259,7 @@ void QSListModel::remove(int i, int count)
     Returns no. of items in this list model.
 
  */
-int QSListModel::count() const
+int VariantListModel::count() const
 {
     return m_storage.size();
 }
@@ -268,7 +269,7 @@ int QSListModel::count() const
     Returns the item at index in the list model.
  */
 
-QVariantMap QSListModel::get(int i) const
+QVariantMap VariantListModel::get(int i) const
 {
     QVariantMap map;
     if (i >=0 && i < m_storage.size()) {
@@ -283,7 +284,7 @@ QVariantMap QSListModel::get(int i) const
     Apply the changes to a record at index. Only modified value will be set.
  */
 
-void QSListModel::setProperty(int idx, QString property, QVariant value)
+void VariantListModel::setProperty(int idx, QString property, QVariant value)
 {
     if (idx < 0 || idx >= m_storage.size())
         return;
@@ -309,7 +310,7 @@ void QSListModel::setProperty(int idx, QString property, QVariant value)
                      roles);
 }
 
-void QSListModel::set(int idx, QVariantMap data)
+void VariantListModel::set(int idx, QVariantMap data)
 {
     if (idx < 0 || idx > m_storage.size()) {
         return;
@@ -350,7 +351,7 @@ void QSListModel::set(int idx, QVariantMap data)
 
   Returns the model's role names.
  */
-QHash<int, QByteArray> QSListModel::roleNames() const
+QHash<int, QByteArray> VariantListModel::roleNames() const
 {
     return m_roles;
 }
@@ -362,7 +363,7 @@ Sets the model's role names to roleNames.
 This function allows mapping of role identifiers to role property names in scripting languages.
 */
 
-void QSListModel::setRoleNames(const QVariantMap &value)
+void VariantListModel::setRoleNames(const QVariantMap &value)
 {
     m_roles.clear();
     m_rolesLookup.clear();
@@ -385,7 +386,7 @@ Sets the model's role names to roleNames.
 This function allows mapping of role identifiers to role property names in scripting languages.
 */
 
-void QSListModel::setRoleNames(const QStringList& list)
+void VariantListModel::setRoleNames(const QStringList& list)
 {
     m_roles.clear();
     m_rolesLookup.clear();
@@ -404,7 +405,7 @@ void QSListModel::setRoleNames(const QStringList& list)
   Replace the content of this list model by input value.
  */
 
-void QSListModel::setStorage(const QVariantList &value)
+void VariantListModel::setStorage(const QVariantList &value)
 {
     if (m_roles.isEmpty() && value.size() > 0) {
         setRoleNames(value.at(0).toMap());
@@ -424,7 +425,7 @@ void QSListModel::setStorage(const QVariantList &value)
 Get the content ot this list model
 
  */
-QVariantList QSListModel::storage() const
+QVariantList VariantListModel::storage() const
 {
     return m_storage;
 }
@@ -434,7 +435,7 @@ QVariantList QSListModel::storage() const
 Returns the index position of the first occurrence of the item with field equal to value
  */
 
-int QSListModel::indexOf(QString field, QVariant value) const
+int VariantListModel::indexOf(QString field, QVariant value) const
 {
     int res = -1;
     for (int i = 0 ; i < m_storage.count();i++) {
