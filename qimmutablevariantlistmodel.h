@@ -28,7 +28,6 @@ public:
 
     int count() const;
 
-
     QHash<int, QByteArray> roleNames() const;
 
     void setRoleNames(const QVariantMap& value);
@@ -39,27 +38,28 @@ public:
 
     QVariantList storage() const;
 
-    virtual void insert(int index, const QVariantList &value);
-
 public slots:
-
-    void append(const QVariantMap&value);
-
-    void insert(int index,const QVariantMap& value);
-
-    void clear();
-
-    virtual void move(int from, int to, int count = 1);
-
-    virtual void remove(int i , int count  = 1);
 
     int indexOf(QString field,QVariant value) const;
 
     QVariantMap get(int i) const;
 
+protected:
+    virtual void insert(int index, const QVariantList &value);
+
+    virtual void insert(int index, const QVariantMap& value);
+
+    virtual void move(int from, int to, int count = 1);
+
+    virtual void remove(int i , int count  = 1);
+
+    virtual void set(int index,QVariantMap data);
+
     void setProperty(int index,QString property ,QVariant value);
 
-    void set(int index,QVariantMap data);
+    void append(const QVariantMap&value);
+
+    void clear();
 
 signals:
     void countChanged();

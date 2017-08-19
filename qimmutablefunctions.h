@@ -19,6 +19,7 @@ namespace QImmutable {
 
     template <typename T>
     void assignOnGadget(T& dest, const QVariantMap& source) {
+        qDebug() << "assignOnGadget(T, QVariantMap)";
         const QMetaObject meta = T::staticMetaObject;
 
         QMap<QString,QVariant>::const_iterator iter = source.begin();
@@ -52,6 +53,7 @@ namespace QImmutable {
 
     template <typename T>
     void assignOnGadget(QVariantMap& dest, const T& source) {
+        qDebug() << "assignOnGadget(QVariantMap, T)";
 
         const QMetaObject meta = T::staticMetaObject;
 

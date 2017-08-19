@@ -876,6 +876,7 @@ void QSyncableTests::diffRunner_complex_data()
 
 }
 
+/*
 void QSyncableTests::listModel_insert()
 {
     VariantListModel* model = new VariantListModel();
@@ -898,12 +899,15 @@ void QSyncableTests::listModel_insert()
 
     delete model;
 }
+*/
 
 void QSyncableTests::listModel_roleNames()
 {
     VariantListModel* model = new VariantListModel();
     QCOMPARE(model->roleNames().size(), 0);
     delete model;
+
+    QVariantList list;
 
     QVariantMap item;
     item["id"] = "test";
@@ -914,21 +918,18 @@ void QSyncableTests::listModel_roleNames()
     item2["order"] = 3;
 
     model = new VariantListModel();
-    model->append(item);
+    list << item;
+    model->setStorage(list);
     QCOMPARE(model->roleNames().size(), 2);
     delete model;
 
+    list.clear();
     model = new VariantListModel();
-    model->insert(0, item);
+    list << item << item;
+    model->setStorage(list);
     QCOMPARE(model->roleNames().size(), 2);
     delete model;
 
-    model = new VariantListModel();
-    model->insert(0, QVariantList() << item << item);
-    QCOMPARE(model->roleNames().size(), 2);
-    delete model;
-
-    QVariantList list;
     list.append(item);
     model = new VariantListModel();
     model->setStorage(list);
