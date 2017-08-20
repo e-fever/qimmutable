@@ -6,9 +6,12 @@
 #include "fastdifftests.h"
 #include "priv/qsimmutablewrapper_p.h"
 #include "priv/qsfastdiffrunneralgo_p.h"
+#include "priv/qimmutablecollection.h"
 #include "immutabletype3.h"
 #include "qsfastdiffrunner.h"
 #include "qimmutablelistmodel.h"
+
+using namespace QImmutable;
 
 template <typename T>
 QVariantList convertList(QList<T> list) {
@@ -26,6 +29,36 @@ FastDiffTests::FastDiffTests(QObject *parent) : QObject(parent)
           QTest::qExec(this, 0, 0); // Autotest detect available test cases of a QObject by looking for "QTest::qExec" in source code
     };
     Q_UNUSED(ref);
+}
+
+void FastDiffTests::test_QImmutable_Collection()
+{
+    {
+        QList<ImmutableType1> list;
+        ImmutableType1 v1;
+        v1.setId("1");
+        list << v1 << ImmutableType1();
+
+        Collection<ImmutableType1> collection(list);
+        QCOMPARE(collection.size(), 2);
+
+        QCOMPARE(collection.get(0).id() , QString("1"));
+    }
+
+    {
+        QQmlApplicationEngine engine;
+        QJSValue list = engine.newArray(10);
+        list.setProperty("0", engine.toScriptValue<int>(1));
+        list.setProperty("1", engine.toScriptValue<int>(2));
+
+        Collection<QJSValue> collection(list);
+
+        QCOMPARE(collection.size(), 10);
+        QCOMPARE(collection.get(0).toInt() , 1);
+        QCOMPARE(collection.get(1).toInt() , 2);
+    }
+
+
 }
 
 void FastDiffTests::test_QSImmutable_wrapper()

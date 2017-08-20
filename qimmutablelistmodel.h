@@ -7,7 +7,7 @@ namespace QImmutable {
     template <typename T>
     class ListModel: public VariantListModel {
     public:
-        ListModel() {
+        ListModel(QObject* parent = 0) : VariantListModel(parent) {
         }
 
         QList<T> source() const

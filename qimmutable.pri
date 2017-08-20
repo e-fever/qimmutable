@@ -18,7 +18,9 @@ HEADERS += \
     $$PWD/qsfastdiffrunner.h \
     $$PWD/qimmutablefunctions.h \
     $$PWD/qimmutablelistmodel.h \
-    $$PWD/qimmutablevariantlistmodel.h
+    $$PWD/qimmutablevariantlistmodel.h \
+    $$PWD/priv/qimmutableqmllistmodel_p.h \
+    $$PWD/priv/qimmutablecollection.h
 
 SOURCES += \
     $$PWD/qsdiffrunner.cpp \
@@ -31,4 +33,5 @@ SOURCES += \
     $$PWD/qsyncableqmltypes.cpp \
     $$PWD/qsyncableqmlwrapper.cpp \
     $$PWD/qimmutablefunctions.cpp \
-    $$PWD/qimmutablevariantlistmodel.cpp
+    $$PWD/qimmutablevariantlistmodel.cpp \
+    $$PWD/priv/qimmutableqmllistmodel.cpp

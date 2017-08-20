@@ -2,6 +2,7 @@
 #include "qsjsonlistmodel.h"
 #include "qsuuid.h"
 #include "qsyncableqmlwrapper.h"
+#include "priv/qimmutableqmllistmodel_p.h"
 
 template <typename T>
 static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
@@ -15,6 +16,8 @@ static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 
 static void registerTypes() {
     qmlRegisterType<QSJsonListModel>("QSyncable", 1, 0, "JsonListModel");
+    qmlRegisterType<QImmutable::QmlListModel>("QImmutable", 1, 0, "ImmutableListModel");
+
     qmlRegisterSingletonType<QSUuid>("QSyncable", 1, 0, "Uuid", provider<QSUuid>);
     qmlRegisterSingletonType<QSyncableQmlWrapper>("QSyncable", 1, 0, "QSyncable", provider<QSyncableQmlWrapper>);
 }

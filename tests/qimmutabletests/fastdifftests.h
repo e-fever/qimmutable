@@ -15,6 +15,7 @@ signals:
 private:
 
 private slots:
+    void test_QImmutable_Collection();
     void test_QSImmutable_wrapper();
     void test_compare();
 
