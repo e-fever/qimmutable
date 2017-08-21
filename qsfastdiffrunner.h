@@ -10,7 +10,7 @@ public:
     }
 
     QSPatchSet compare(const QList<T>& from, const QList<T>& to) {
-        QSFastDiffRunnerAlgo<T> algo;
+        QImmutable::QSFastDiffRunnerAlgo<T> algo;
         return algo.compare(from , to);
     }
 

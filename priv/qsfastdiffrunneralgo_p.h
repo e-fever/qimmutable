@@ -2,7 +2,10 @@
 #include "priv/qsimmutablewrapper_p.h"
 #include "priv/qsalgotypes_p.h"
 #include "priv/qstree.h"
+#include "priv/qimmutablecollection.h"
 #include "qspatch.h"
+
+namespace QImmutable {
 
 template <typename T>
 class QSFastDiffRunnerAlgo {
@@ -392,3 +395,5 @@ private:
     // Tree of move patch
     QSTree tree;
 };
+
+}
