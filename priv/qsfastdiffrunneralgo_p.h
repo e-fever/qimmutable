@@ -23,7 +23,7 @@ public:
         removing = 0;
     }
 
-    QSPatchSet compare(const QList<T>& from, const QList<T>& to) {
+    QSPatchSet compare(const Collection<T>& from, const Collection<T>& to) {
         if (from.isSharedWith(to)) {
             return QSPatchSet();
         }
@@ -62,7 +62,7 @@ public:
 
             while (indexF < fromSize) {
                 // Process until it found an item that remain in origianl position (neither removd / moved).
-                itemF = from.at(indexF);
+                itemF = from[indexF];
                 keyF = wrapper.key(itemF);
 
                 state = hash[keyF]; // It mush obtain the key value
@@ -87,7 +87,7 @@ public:
             }
 
             while (indexT < toSize ) {
-                itemT = to.at(indexT);
+                itemT = to[indexT];
                 keyT = wrapper.key(itemT);
                 state = hash[keyT];
 
@@ -127,7 +127,7 @@ private:
         return patches;
     }
 
-    QList<QSPatch> compareWithoutKey(const QList<T>& from, const QList<T>& to) {
+    QList<QSPatch> compareWithoutKey(const Collection<T>& from, const Collection<T>& to) {
         QList<QSPatch> patches;
 
         int max = qMax(from.size(), to.size());
@@ -149,7 +149,7 @@ private:
     }
 
     // Preprocess the list, stop until the key is different. It will also handle common pattern (like append to end , remove from end)
-    int preprocess(const QList<T>& from, const QList<T>& to) {
+    int preprocess(const Collection<T>& from, const Collection<T>& to) {
         int index = 0;
         int min = qMin(from.size(), to.size());
         T f;
@@ -204,7 +204,7 @@ private:
         int toSize = to.size();
 
         for (int i = skipped; i < fromSize ; i++) {
-            item = from.at(i);
+            item = from[i];
             key = wrapper.key(item);
             if (hash.contains(key)) {
                 qWarning() << "QSFastDiffRunner.compare() - Duplicated or missing key.";
@@ -216,7 +216,7 @@ private:
         }
 
         for (int i = skipped; i < toSize ; i++) {
-            item = to.at(i);
+            item = to[i];
             key = wrapper.key(item);
 
             if (hash.contains(key)) {
@@ -301,7 +301,7 @@ private:
         }
     }
 
-    QSPatch createInsertPatch(int from, int to, const QList<T>& source ) {
+    QSPatch createInsertPatch(int from, int to, const Collection<T>& source ) {
         int count = to - from + 1;
         QVariantList list;
         list.reserve(count);
@@ -358,9 +358,9 @@ private:
 
     QSImmutableWrapper<T> wrapper;
 
-    QList<T> from;
+    Collection<T> from;
 
-    QList<T> to;
+    Collection<T> to;
 
     // Stored patches (without any update patches)
     QList<QSPatch> patches;

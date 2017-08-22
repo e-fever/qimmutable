@@ -11,7 +11,11 @@ namespace QImmutable {
     class Collection {
 
     public:
-        Collection(QList<T>& source) {
+
+        Collection() {
+        }
+
+        Collection(const QList<T>& source) {
             m_source = source;
         }
 
@@ -23,6 +27,14 @@ namespace QImmutable {
             return m_source[index];
         }
 
+        const T& operator[](int index) const {
+            return m_source[index];
+        }
+
+        bool isSharedWith(const Collection<T>& other) const {
+            return m_source.isSharedWith(other.m_source);
+        }
+
     private:
         QList<T> m_source;
     };
@@ -30,7 +42,7 @@ namespace QImmutable {
     template<>
     class Collection<QJSValue> {
     public:
-        Collection(QJSValue source) {
+        Collection(const QJSValue& source) {
             m_source = source;
         }
 
@@ -40,6 +52,14 @@ namespace QImmutable {
 
         QJSValue get(int index) const {
             return m_source.property(index);
+        }
+
+        const QJSValue operator[](int index) const {
+            return m_source.property(index);
+        }
+
+        bool isSharedWith(const Collection<QJSValue>& value) const {
+            return m_source.strictlyEquals(value.m_source);
         }
 
     private:
