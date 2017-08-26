@@ -5,8 +5,11 @@
 #include <QJSValueIterator>
 #include "qimmutablefunctions.h"
 
+namespace QImmutable {
+
+/// It is a wrapper of an Immutable type
 template <typename T>
-class QSImmutableWrapper {
+class Item {
 
 public:
     inline bool isShared(const T& v1, const T& v2) const {
@@ -73,7 +76,7 @@ public:
 };
 
 template<>
-class QSImmutableWrapper<QVariantMap> {
+class Item<QVariantMap> {
 public:
     inline bool isShared(const QVariantMap& v1, const QVariantMap& v2) const {
         return v1.isSharedWith(v2);
@@ -119,7 +122,7 @@ public:
 
 
 template<>
-class QSImmutableWrapper<QJSValue> {
+class Item<QJSValue> {
 public:
     inline bool isShared(const QJSValue& v1, const QJSValue& v2) const {        
         if (v1.isNull() || v1.isUndefined() || v2.isNull() || v2.isUndefined()) {
@@ -161,16 +164,16 @@ public:
         return !keyField.isNull();
     }
 
-    QString key(const QVariantMap& object) {
+    QString key(const QJSValue& object) {
         if (keyField.isNull()) {
             return QString();
         }
 
         QString res;
-        QVariant value = object[keyField];
-        if (value.type() == QVariant::Int) {
+        QJSValue value = object.property(keyField);
+        if (value.isNumber()) {
             res = QString::number(value.toInt());
-        } else if (value.type() == QVariant::String) {
+        } else if (value.isString()) {
             res = value.toString();
         }
         return res;
@@ -179,3 +182,5 @@ public:
     QString keyField;
 
 };
+
+}

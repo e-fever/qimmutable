@@ -21,6 +21,8 @@ private slots:
 
     void test_QSFastDiffRunner();
     void test_QSFastDiffRunner_data();
+
+    void test_FastDiffRunner_QJSValue();
 };
 
 #endif // FASTDIFTESTS_H

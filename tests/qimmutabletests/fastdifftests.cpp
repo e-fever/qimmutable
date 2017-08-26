@@ -4,7 +4,7 @@
 #include "immutabletype1.h"
 #include "immutabletype2.h"
 #include "fastdifftests.h"
-#include "priv/qsimmutablewrapper_p.h"
+#include "priv/qimmutableitem_p.h"
 #include "priv/qsfastdiffrunneralgo_p.h"
 #include "priv/qimmutablecollection.h"
 #include "immutabletype3.h"
@@ -15,7 +15,7 @@ using namespace QImmutable;
 
 template <typename T>
 QVariantList convertList(QList<T> list) {
-    QSImmutableWrapper<T> wrapper;
+    Item<T> wrapper;
     QVariantList res;
     for (int i = 0 ; i < list.size();i++) {
         res << wrapper.convert(list[i]);
@@ -65,9 +65,9 @@ void FastDiffTests::test_QSImmutable_wrapper()
 {
 
     {
-        QSImmutableWrapper<ImmutableType1> wrapper1;
-        QSImmutableWrapper<ImmutableType2> wrapper2;
-        QSImmutableWrapper<ImmutableType3> wrapper3;
+        Item<ImmutableType1> wrapper1;
+        Item<ImmutableType2> wrapper2;
+        Item<ImmutableType3> wrapper3;
 
         ImmutableType1 v1, v2;
         ImmutableType3 v3;
@@ -96,7 +96,7 @@ void FastDiffTests::test_QSImmutable_wrapper()
     }
 
     {
-        QSImmutableWrapper<QVariantMap> wrapper;
+        Item<QVariantMap> wrapper;
         QVariantMap v1, v2;
         v1["value1"] = 9;
         QVERIFY(!wrapper.isShared(v1,v2));
@@ -115,7 +115,7 @@ void FastDiffTests::test_QSImmutable_wrapper()
 
     {
         QQmlApplicationEngine engine;
-        QSImmutableWrapper<QJSValue> wrapper;
+        Item<QJSValue> wrapper;
         wrapper.keyField = "id";
         QJSValue v1, v2;
         QVERIFY(!wrapper.isShared(v1, v2));
@@ -247,7 +247,7 @@ void FastDiffTests::test_QSFastDiffRunner_data()
     d.setId("d");
     e.setId("e");
     f.setId("f");
-    QSImmutableWrapper<ImmutableType1> wrapper;
+    Item<ImmutableType1> wrapper;
 
     /* End of preparation */
 
@@ -381,4 +381,45 @@ void FastDiffTests::test_QSFastDiffRunner_data()
     changes  << QSPatch(QSPatch::Update,1,1,1,tmp);
 
     QTest::newRow("Update 2 elements") << previous << current << changes;
+}
+
+void FastDiffTests::test_FastDiffRunner_QJSValue()
+{
+    QQmlApplicationEngine engine;
+
+    FastDiffRunnerAlgo<QJSValue> runner;
+    Item<QJSValue> wrapper;
+    wrapper.keyField = "key";
+
+    QStringList letters;
+    letters << "a" << "b" << "c";
+    QJSValueList objects;
+
+    foreach (QString letter, letters) {
+        QJSValue object = engine.newObject();
+        object.setProperty("key", letter);
+        objects << object;
+    }
+
+    QJSValue a,b,c;
+    a = objects[0];
+    b = objects[1];
+    c = objects[2];
+
+    QJSValue previous = engine.newArray(3);
+    previous.setProperty(0, a);
+    previous.setProperty(1, b);
+    previous.setProperty(2, c);
+
+    QJSValue current = engine.newArray(2);
+    current.setProperty(0, a);
+    current.setProperty(1, b);
+
+    QList<QSPatch> patches;
+    patches = runner.compare(previous, current);
+    QCOMPARE(patches.size(), 1);
+
+    runner.setWrapper(wrapper);
+    patches = runner.compare(previous, current);
+    QCOMPARE(patches.size(), 1);
 }

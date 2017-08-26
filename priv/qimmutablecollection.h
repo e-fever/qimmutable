@@ -42,6 +42,10 @@ namespace QImmutable {
     template<>
     class Collection<QJSValue> {
     public:
+        Collection() {
+
+        }
+
         Collection(const QJSValue& source) {
             m_source = source;
         }

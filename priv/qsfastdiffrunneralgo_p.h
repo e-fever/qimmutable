@@ -1,5 +1,5 @@
 #pragma once
-#include "priv/qsimmutablewrapper_p.h"
+#include "priv/qimmutableitem_p.h"
 #include "priv/qsalgotypes_p.h"
 #include "priv/qstree.h"
 #include "priv/qimmutablecollection.h"
@@ -8,11 +8,11 @@
 namespace QImmutable {
 
 template <typename T>
-class QSFastDiffRunnerAlgo {
+class FastDiffRunnerAlgo {
 
 public:
 
-    QSFastDiffRunnerAlgo() {
+    FastDiffRunnerAlgo() {
         insertStart = -1;
         removeStart = -1;
 
@@ -114,6 +114,10 @@ public:
         markItemAtFromList(QSAlgoTypes::NoMove, dummy);
 
         return combine();
+    }
+
+    void setWrapper(Item<T> value) {
+        wrapper = value;
     }
 
 private:
@@ -356,7 +360,7 @@ private:
         }
     }
 
-    QSImmutableWrapper<T> wrapper;
+    Item<T> wrapper;
 
     Collection<T> from;
 
