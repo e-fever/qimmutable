@@ -2,7 +2,7 @@
 
 using namespace QImmutable;
 
-QmlListModel::QmlListModel(QObject *parent) : QImmutable::ListModel<QJSValue>(parent)
+QmlListModel::QmlListModel(QObject *parent) : VariantListModel(parent)
 {
 
 }
@@ -16,4 +16,27 @@ void QmlListModel::setKeyField(const QString &keyField)
 {
     m_keyField = keyField;
     emit keyFieldChanged();
+}
+
+QJSValue QmlListModel::source() const
+{
+    return m_source;
+}
+
+void QmlListModel::setSource(const QJSValue &source)
+{
+    if (m_source.strictlyEquals(source)) {
+        return;
+    }
+
+    QSFastDiffRunner<QJSValue> runner;
+    QImmutable::FastDiffRunnerAlgo<QJSValue> algo;
+    Item<QJSValue> wrapper;
+    wrapper.keyField = m_keyField;
+    algo.setWrapper(wrapper);
+
+    QList<QSPatch> patches = algo.compare(m_source, source);
+    runner.patch(this, patches);
+    m_source = source;
+
 }

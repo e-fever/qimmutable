@@ -39,4 +39,5 @@ DISTFILES += \
     ../../README.md \
     SampleData1.qml \
     SampleData1.json \
-    tst_QSyncable.qml
+    tst_QSyncable.qml \
+    tst_ImmutableListModel.qml

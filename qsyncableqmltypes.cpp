@@ -15,8 +15,9 @@ static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 }
 
 static void registerTypes() {
-    qmlRegisterType<QSJsonListModel>("QSyncable", 1, 0, "JsonListModel");
     qmlRegisterType<QImmutable::QmlListModel>("QImmutable", 1, 0, "ImmutableListModel");
+
+    qmlRegisterType<QSJsonListModel>("QSyncable", 1, 0, "JsonListModel");
 
     qmlRegisterSingletonType<QSUuid>("QSyncable", 1, 0, "Uuid", provider<QSUuid>);
     qmlRegisterSingletonType<QSyncableQmlWrapper>("QSyncable", 1, 0, "QSyncable", provider<QSyncableQmlWrapper>);
