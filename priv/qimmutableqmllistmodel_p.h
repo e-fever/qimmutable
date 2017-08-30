@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QJSValue>
 #include "qimmutablelistmodel.h"
-#include "priv/qsfastdiffrunneralgo_p.h"
+#include "priv/qimmutablefastdiffrunneralgo_p.h"
 
 namespace QImmutable {
 

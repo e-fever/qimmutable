@@ -5,7 +5,7 @@
 #include "immutabletype2.h"
 #include "fastdifftests.h"
 #include "priv/qimmutableitem_p.h"
-#include "priv/qsfastdiffrunneralgo_p.h"
+#include "priv/qimmutablefastdiffrunneralgo_p.h"
 #include "priv/qimmutablecollection.h"
 #include "immutabletype3.h"
 #include "qsfastdiffrunner.h"

@@ -188,7 +188,7 @@ void QSDiffRunnerAlgo::appendMovePatch(QSAlgoTypes::MoveOp &moveOp)
 
     int offset = 0;
 
-    QSTreeNode* node = tree.insert(moveOp.posF,moveOp.count);
+    QImmutable::TreeNode* node = tree.insert(moveOp.posF,moveOp.count);
     offset = tree.countLessThan(node);
 
     if (offset > 0) {

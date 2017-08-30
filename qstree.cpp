@@ -1,35 +1,37 @@
 #include <QtCore>
 #include "priv/qstree.h"
 
-QSTree::QSTree()
+using namespace QImmutable;
+
+Tree::Tree()
 {
     m_min = m_max = m_sum = m_height = 0;
     m_root = 0;
 }
 
-QSTree::~QSTree()
+Tree::~Tree()
 {
     if (m_root) {
         delete m_root;
     }
 }
 
-bool QSTree::isNull() const
+bool Tree::isNull() const
 {
     return m_root == 0;
 }
 
-int QSTree::min() const
+int Tree::min() const
 {
     return m_min;
 }
 
-void QSTree::setMin(int min)
+void Tree::setMin(int min)
 {
     m_min = min;
 }
 
-void QSTree::updateFromRoot()
+void Tree::updateFromRoot()
 {
     if (m_root) {
         m_sum = m_root->sum();
@@ -40,7 +42,7 @@ void QSTree::updateFromRoot()
     }
 }
 
-QSTreeNode* QSTree::rotateLeft(QSTreeNode *n)
+TreeNode* Tree::rotateLeft(TreeNode *n)
 {
     /* n            x
      *  \         /
@@ -50,14 +52,14 @@ QSTreeNode* QSTree::rotateLeft(QSTreeNode *n)
      */
 
     bool isLeft = false;
-    QSTreeNode* parent = n->parent();
+    TreeNode* parent = n->parent();
 
     if (parent) {
         isLeft = (parent->left() == n);
     }
 
-    QSTreeNode* x = n->takeRight();
-    QSTreeNode* y = x->takeLeft();
+    TreeNode* x = n->takeRight();
+    TreeNode* y = x->takeLeft();
 
     x->setLeft(n);
     n->setRight(y);
@@ -80,7 +82,7 @@ QSTreeNode* QSTree::rotateLeft(QSTreeNode *n)
     return x;
 }
 
-QSTreeNode *QSTree::rotateRight(QSTreeNode *n)
+TreeNode *Tree::rotateRight(TreeNode *n)
 {
     /*   n      x
      *  /         \
@@ -90,14 +92,14 @@ QSTreeNode *QSTree::rotateRight(QSTreeNode *n)
      */
 
     bool isLeft = false;
-    QSTreeNode* parent = n->parent();
+    TreeNode* parent = n->parent();
 
     if (parent) {
         isLeft = (parent->left() == n);
     }
 
-    QSTreeNode* x = n->takeLeft();
-    QSTreeNode* y = x->takeRight();
+    TreeNode* x = n->takeLeft();
+    TreeNode* y = x->takeRight();
 
     x->setRight(n);
     n->setLeft(y);
@@ -120,42 +122,42 @@ QSTreeNode *QSTree::rotateRight(QSTreeNode *n)
     return x;
 }
 
-int QSTree::max() const
+int Tree::max() const
 {
     return m_max;
 }
 
-void QSTree::setMax(int max)
+void Tree::setMax(int max)
 {
     m_max = max;
 }
 
-int QSTree::sum() const
+int Tree::sum() const
 {
     return m_sum;
 }
 
-void QSTree::setSum(int sum)
+void Tree::setSum(int sum)
 {
     m_sum = sum;
 }
 
-int QSTree::height() const
+int Tree::height() const
 {
     return m_height;
 }
 
-void QSTree::setHeight(int depth)
+void Tree::setHeight(int depth)
 {
     m_height = depth;
 }
 
-QSTreeNode *QSTree::root() const
+TreeNode *Tree::root() const
 {
     return m_root;
 }
 
-void QSTree::setRoot(QSTreeNode *root)
+void Tree::setRoot(TreeNode *root)
 {
     m_root = root;
     if (root) {
@@ -169,14 +171,14 @@ void QSTree::setRoot(QSTreeNode *root)
     }
 }
 
-QSTreeNode *QSTree::insert(int key, int count)
+TreeNode *Tree::insert(int key, int count)
 {
-    QSTreeNode* node = new QSTreeNode(key, count);
+    TreeNode* node = new TreeNode(key, count);
     insert(node);
     return node;
 }
 
-void QSTree::remove(int key)
+void Tree::remove(int key)
 {
     if (m_root == 0) {
         return;
@@ -186,7 +188,7 @@ void QSTree::remove(int key)
     updateFromRoot();
 
     if (key == m_min && m_root) {
-        QSTreeNode* node = searchMin(m_root);
+        TreeNode* node = searchMin(m_root);
         m_min = node->key();
     }
 
@@ -194,7 +196,7 @@ void QSTree::remove(int key)
 
 }
 
-QSTreeNode *QSTree::search(int key) const
+TreeNode *Tree::search(int key) const
 {
     if (m_root == 0) {
         return 0;
@@ -203,9 +205,9 @@ QSTreeNode *QSTree::search(int key) const
     return search(m_root, key);
 }
 
-int QSTree::countLessThan(int key) const
+int Tree::countLessThan(int key) const
 {
-    QSTreeNode* node = search(key);
+    TreeNode* node = search(key);
 
     if (node == 0) {
         return 0;
@@ -214,7 +216,7 @@ int QSTree::countLessThan(int key) const
     return countLessThan(node);
 }
 
-int QSTree::countLessThan(QSTreeNode *node) const
+int Tree::countLessThan(TreeNode *node) const
 {
     int sum = 0;
     bool fromRightChild = false;
@@ -240,7 +242,7 @@ int QSTree::countLessThan(QSTreeNode *node) const
     return sum;
 }
 
-bool QSTree::validate(QSTreeNode* node)
+bool Tree::validate(TreeNode* node)
 {
 
     if (node == 0) {
@@ -270,7 +272,7 @@ bool QSTree::validate(QSTreeNode* node)
     return !invalid;
 }
 
-void QSTree::insert(QSTreeNode *node)
+void Tree::insert(TreeNode *node)
 {
     if (m_root == 0) {
         setRoot(node);
@@ -288,7 +290,7 @@ void QSTree::insert(QSTreeNode *node)
     updateFromRoot();
 }
 
-void QSTree::insert(QSTreeNode *current, QSTreeNode *node)
+void Tree::insert(TreeNode *current, TreeNode *node)
 {
     if (node->key() < current->key()) {
         if (current->hasLeft()) {
@@ -324,7 +326,7 @@ void QSTree::insert(QSTreeNode *current, QSTreeNode *node)
     current->update();
 }
 
-void QSTree::remove(QSTreeNode *node, int key)
+void Tree::remove(TreeNode *node, int key)
 {
     if (node->key() != key) {
 
@@ -341,15 +343,15 @@ void QSTree::remove(QSTreeNode *node, int key)
     } else {
 
         if (node->hasLeft() && node->hasRight()) {
-            QSTreeNode* minNode = searchMin(node->right());
+            TreeNode* minNode = searchMin(node->right());
             node->setCount(minNode->count());
             node->setKey(minNode->key());
             remove(node->right(), minNode->key());
 
         } else {
 
-            QSTreeNode* parent = node->parent();
-            QSTreeNode* child = 0;
+            TreeNode* parent = node->parent();
+            TreeNode* child = 0;
             if (node->hasLeft()) {
                 child = node->takeLeft();
             } else if (node->hasRight()) {
@@ -392,9 +394,9 @@ void QSTree::remove(QSTreeNode *node, int key)
     }
 }
 
-QSTreeNode* QSTree::search(QSTreeNode *node, int key) const
+TreeNode* Tree::search(TreeNode *node, int key) const
 {
-    QSTreeNode* res = 0;
+    TreeNode* res = 0;
 
     if (node->key() == key) {
         return node;
@@ -410,7 +412,7 @@ QSTreeNode* QSTree::search(QSTreeNode *node, int key) const
     return res;
 }
 
-QSTreeNode *QSTree::searchMin(QSTreeNode *node) const
+TreeNode *Tree::searchMin(TreeNode *node) const
 {
     if (!node->hasLeft()) {
         return node;
@@ -419,7 +421,7 @@ QSTreeNode *QSTree::searchMin(QSTreeNode *node) const
     }
 }
 
-QSTreeNode *QSTree::searchMax(QSTreeNode *node) const
+TreeNode *Tree::searchMax(TreeNode *node) const
 {
     if (!node->hasRight()) {
         return node;
@@ -428,9 +430,9 @@ QSTreeNode *QSTree::searchMax(QSTreeNode *node) const
     }
 }
 
-QDebug operator<<(QDebug dbg, const QSTree& tree) {
+QDebug operator<<(QDebug dbg, const Tree& tree) {
 
-    QQueue<QSTreeNode*> queue;
+    QQueue<TreeNode*> queue;
     QStringList links;
 
     int height = -1;
@@ -442,7 +444,7 @@ QDebug operator<<(QDebug dbg, const QSTree& tree) {
     }
 
     while (queue.size() > 0) {
-        QSTreeNode* node = queue.dequeue();
+        TreeNode* node = queue.dequeue();
 
         if (node->parent() != 0) {
             links << QString("%1->%2").arg(node->parent()->key()).arg(node->key());

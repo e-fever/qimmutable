@@ -186,7 +186,7 @@ void QSyncableTests::patch_merge()
 
 void QSyncableTests::tree()
 {
-    QSTree tree;
+    Tree tree;
     QVERIFY(tree.min() == 0);
     QVERIFY(tree.max() == 0);
     QVERIFY(tree.height() == 0);
@@ -194,7 +194,7 @@ void QSyncableTests::tree()
     QVERIFY(tree.root() == 0);
 
     // 8(10)
-    QSTreeNode* node = tree.insert(8,10);
+    TreeNode* node = tree.insert(8,10);
 
     QVERIFY(tree.root() == node);
     QCOMPARE(tree.min() , 8);
@@ -258,7 +258,7 @@ void QSyncableTests::tree()
 
 void QSyncableTests::tree_insert()
 {
-    QSTree tree;
+    Tree tree;
 
     tree.insert(100);
     tree.insert(99);
@@ -279,7 +279,7 @@ void QSyncableTests::tree_insert()
 
 void QSyncableTests::tree_updateMin()
 {
-    QSTree tree;
+    Tree tree;
 
     tree.insert(8,1);
     tree.insert(6,1);
@@ -310,7 +310,7 @@ void QSyncableTests::tree_balance()
     }
 
     insert = src;
-    QSTree tree;
+    Tree tree;
 
     while (insert.size() > 0) {
         int i = qrand() % insert.size();
@@ -323,7 +323,7 @@ void QSyncableTests::tree_balance()
 
         int height = qFloor(log2(inserted));
 
-        bool valid = QSTree::validate(tree.root());
+        bool valid = Tree::validate(tree.root());
 
         if (!valid) {
             qDebug() << tree;
@@ -347,7 +347,7 @@ void QSyncableTests::tree_balance()
             break;
         }
 
-        bool valid = QSTree::validate(tree.root());
+        bool valid = Tree::validate(tree.root());
 
         if (!valid) {
             qDebug() << tree;
@@ -362,7 +362,7 @@ void QSyncableTests::tree_balance()
 
 void QSyncableTests::tree_remove()
 {
-    QSTree tree;
+    Tree tree;
     tree.insert(3,1);
     tree.insert(6,1);
 

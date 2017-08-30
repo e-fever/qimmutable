@@ -13,14 +13,14 @@ HEADERS += \
     $$PWD/QSListModel \
     $$PWD/qsyncableqmlwrapper.h \
     $$PWD/priv/qsalgotypes_p.h \
-    $$PWD/priv/qsfastdiffrunneralgo_p.h \
     $$PWD/qsfastdiffrunner.h \
     $$PWD/qimmutablefunctions.h \
     $$PWD/qimmutablelistmodel.h \
     $$PWD/qimmutablevariantlistmodel.h \
     $$PWD/priv/qimmutableqmllistmodel_p.h \
     $$PWD/priv/qimmutablecollection.h \
-    $$PWD/priv/qimmutableitem_p.h
+    $$PWD/priv/qimmutableitem_p.h \
+    $$PWD/priv/qimmutablefastdiffrunneralgo_p.h
 
 SOURCES += \
     $$PWD/qsdiffrunner.cpp \

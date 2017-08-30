@@ -1,15 +1,16 @@
 #ifndef QSTREE_H
 #define QSTREE_H
 
-#include "qstreenode.h"
+#include "priv/qstreenode.h"
 
 // AVL Tree Implementation
+namespace QImmutable {
 
-class QSTree
+class Tree
 {
 public:
-    QSTree();
-    ~QSTree();
+    Tree();
+    ~Tree();
 
     bool isNull() const;
 
@@ -21,37 +22,37 @@ public:
 
     int height() const;
 
-    QSTreeNode *root() const;
+    TreeNode *root() const;
 
-    QSTreeNode* insert(int key, int count = 1);
+    TreeNode* insert(int key, int count = 1);
 
     void remove(int key);
 
-    QSTreeNode* search(int key) const;
+    TreeNode* search(int key) const;
 
     // Find sum of count of node wher its's key is less than input key
     int countLessThan(int key) const;
 
-    int countLessThan(QSTreeNode* node) const;
+    int countLessThan(TreeNode* node) const;
 
     // Validate is it a balanced tree of node
-    static bool validate(QSTreeNode* node);
+    static bool validate(TreeNode* node);
 
 private:
 
-    void insert(QSTreeNode* node);
+    void insert(TreeNode* node);
 
-    void insert(QSTreeNode* current, QSTreeNode* node);
+    void insert(TreeNode* current, TreeNode* node);
 
-    void remove(QSTreeNode* current, int key);
+    void remove(TreeNode* current, int key);
 
-    QSTreeNode* search(QSTreeNode* node, int key) const;
+    TreeNode* search(TreeNode* node, int key) const;
 
-    QSTreeNode* searchMin(QSTreeNode* node) const;
+    TreeNode* searchMin(TreeNode* node) const;
 
-    QSTreeNode* searchMax(QSTreeNode* node) const;
+    TreeNode* searchMax(TreeNode* node) const;
 
-    void setRoot(QSTreeNode *root);
+    void setRoot(TreeNode *root);
 
     void setSum(int sum);
 
@@ -63,20 +64,21 @@ private:
 
     void updateFromRoot();
 
-    QSTreeNode* rotateLeft(QSTreeNode* node);
+    TreeNode* rotateLeft(TreeNode* node);
 
-    QSTreeNode* rotateRight(QSTreeNode* node);
+    TreeNode* rotateRight(TreeNode* node);
 
     int m_min;
     int m_max;
     int m_sum;
     int m_height;
 
-    QSTreeNode* m_root;
+    TreeNode* m_root;
 
 };
 
-QDebug operator<<(QDebug dbg, const QSTree& change);
+}
 
+QDebug operator<<(QDebug dbg, const QImmutable::Tree& change);
 
 #endif // QSTREE_H

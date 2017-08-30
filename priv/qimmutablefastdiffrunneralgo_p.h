@@ -336,7 +336,7 @@ private:
 
         int offset = 0;
 
-        QSTreeNode* node = tree.insert(moveOp.posF,moveOp.count);
+        TreeNode* node = tree.insert(moveOp.posF,moveOp.count);
         offset = tree.countLessThan(node);
 
         if (offset > 0) {
@@ -397,7 +397,7 @@ private:
     QSAlgoTypes::MoveOp pendingMovePatch;
 
     // Tree of move patch
-    QSTree tree;
+    Tree tree;
 };
 
 }

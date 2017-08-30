@@ -1,12 +1,14 @@
 #ifndef QSTREENODE_H
 #define QSTREENODE_H
 
-class QSTreeNode
+namespace QImmutable {
+
+class TreeNode
 {
 public:
-    QSTreeNode();
-    QSTreeNode(int key, int count);
-    ~QSTreeNode();
+    TreeNode();
+    TreeNode(int key, int count);
+    ~TreeNode();
 
     int count() const;
     void setCount(int count);
@@ -20,20 +22,20 @@ public:
     int height() const;
     void setHeight(int height);
 
-    QSTreeNode *left() const;
-    void setLeft(QSTreeNode *left);
+    TreeNode *left() const;
+    void setLeft(TreeNode *left);
 
-    QSTreeNode *right() const;
-    void setRight(QSTreeNode *right);
+    TreeNode *right() const;
+    void setRight(TreeNode *right);
 
-    QSTreeNode *parent() const;
-    void setParent(QSTreeNode *parent);
+    TreeNode *parent() const;
+    void setParent(TreeNode *parent);
 
     // Remove the left node and return it. It won't be destroyed
-    QSTreeNode* takeLeft();
+    TreeNode* takeLeft();
 
     // Remove the right node and return it. It won't be destroyed
-    QSTreeNode* takeRight();
+    TreeNode* takeRight();
 
     // If the parent is not null, remove current this node from parent.
     void unparent();
@@ -58,10 +60,12 @@ private:
     int m_count;
     int m_sum;
     int m_height;
-    QSTreeNode* m_left;
-    QSTreeNode* m_right;
-    QSTreeNode* m_parent;
+    TreeNode* m_left;
+    TreeNode* m_right;
+    TreeNode* m_parent;
 
 };
+
+}
 
 #endif // QSTREENODE_H

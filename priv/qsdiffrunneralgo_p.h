@@ -82,7 +82,7 @@ private:
     QSAlgoTypes::MoveOp pendingMovePatch;
 
     // Tree of move patch
-    QSTree tree;
+    QImmutable::Tree tree;
 
     QString m_keyField;
 

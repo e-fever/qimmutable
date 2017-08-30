@@ -1,6 +1,6 @@
 #pragma once
 #include <priv/qsdiffrunneralgo_p.h>
-#include <priv/qsfastdiffrunneralgo_p.h>
+#include <priv/qimmutablefastdiffrunneralgo_p.h>
 #include <qspatchable.h>
 
 template <typename T>

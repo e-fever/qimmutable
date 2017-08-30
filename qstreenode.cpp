@@ -1,7 +1,9 @@
 #include <QtCore>
 #include "priv/qstreenode.h"
 
-QSTreeNode::QSTreeNode()
+using namespace QImmutable;
+
+TreeNode::TreeNode()
 {
     m_key = 0;
     m_height = 0;
@@ -13,7 +15,7 @@ QSTreeNode::QSTreeNode()
 
 }
 
-QSTreeNode::QSTreeNode(int key, int count)
+TreeNode::TreeNode(int key, int count)
 {
     m_key = key;
     m_count = count;
@@ -24,7 +26,7 @@ QSTreeNode::QSTreeNode(int key, int count)
     m_parent = 0;
 }
 
-QSTreeNode::~QSTreeNode()
+TreeNode::~TreeNode()
 {
     if (m_left) {
         delete m_left;
@@ -35,52 +37,52 @@ QSTreeNode::~QSTreeNode()
     }
 }
 
-int QSTreeNode::count() const
+int TreeNode::count() const
 {
     return m_count;
 }
 
-void QSTreeNode::setCount(int count)
+void TreeNode::setCount(int count)
 {
     m_count = count;
 }
 
-int QSTreeNode::key() const
+int TreeNode::key() const
 {
     return m_key;
 }
 
-void QSTreeNode::setKey(int key)
+void TreeNode::setKey(int key)
 {
     m_key = key;
 }
 
-int QSTreeNode::sum() const
+int TreeNode::sum() const
 {
     return m_sum;
 }
 
-void QSTreeNode::setSum(int sum)
+void TreeNode::setSum(int sum)
 {
     m_sum = sum;
 }
 
-int QSTreeNode::height() const
+int TreeNode::height() const
 {
     return m_height;
 }
 
-void QSTreeNode::setHeight(int height)
+void TreeNode::setHeight(int height)
 {
     m_height = height;
 }
 
-QSTreeNode *QSTreeNode::left() const
+TreeNode *TreeNode::left() const
 {
     return m_left;
 }
 
-void QSTreeNode::setLeft(QSTreeNode *left)
+void TreeNode::setLeft(TreeNode *left)
 {
     m_left = left;
     if (left) {
@@ -88,12 +90,12 @@ void QSTreeNode::setLeft(QSTreeNode *left)
     }
 }
 
-QSTreeNode *QSTreeNode::right() const
+TreeNode *TreeNode::right() const
 {
     return m_right;
 }
 
-void QSTreeNode::setRight(QSTreeNode *right)
+void TreeNode::setRight(TreeNode *right)
 {
     m_right = right;
     if (right) {
@@ -101,7 +103,7 @@ void QSTreeNode::setRight(QSTreeNode *right)
     }
 }
 
-void QSTreeNode::update()
+void TreeNode::update()
 {
     int h = 1;
     m_sum = m_count;
@@ -118,17 +120,17 @@ void QSTreeNode::update()
     m_height = h;
 }
 
-bool QSTreeNode::hasLeft() const
+bool TreeNode::hasLeft() const
 {
     return m_left != 0;
 }
 
-bool QSTreeNode::hasRight() const
+bool TreeNode::hasRight() const
 {
     return m_right != 0;
 }
 
-int QSTreeNode::leftHeight() const
+int TreeNode::leftHeight() const
 {
     int ret = 0;
     if (m_left) {
@@ -137,7 +139,7 @@ int QSTreeNode::leftHeight() const
     return ret;
 }
 
-int QSTreeNode::rightHeight() const
+int TreeNode::rightHeight() const
 {
     int ret = 0;
     if (m_right) {
@@ -146,7 +148,7 @@ int QSTreeNode::rightHeight() const
     return ret;
 }
 
-int QSTreeNode::balance() const
+int TreeNode::balance() const
 {
     int l = 0, r = 0;
     if (m_left) {
@@ -160,19 +162,19 @@ int QSTreeNode::balance() const
     return l - r;
 }
 
-QSTreeNode *QSTreeNode::parent() const
+TreeNode *TreeNode::parent() const
 {
     return m_parent;
 }
 
-void QSTreeNode::setParent(QSTreeNode *parent)
+void TreeNode::setParent(TreeNode *parent)
 {
     m_parent = parent;
 }
 
-QSTreeNode *QSTreeNode::takeLeft()
+TreeNode *TreeNode::takeLeft()
 {
-    QSTreeNode* res = 0;
+    TreeNode* res = 0;
 
     if (m_left) {
         res = m_left;
@@ -183,9 +185,9 @@ QSTreeNode *QSTreeNode::takeLeft()
     return res;
 }
 
-QSTreeNode *QSTreeNode::takeRight()
+TreeNode *TreeNode::takeRight()
 {
-    QSTreeNode* res = 0;
+    TreeNode* res = 0;
 
     if (m_right) {
         res = m_right;
@@ -196,7 +198,7 @@ QSTreeNode *QSTreeNode::takeRight()
     return res;
 }
 
-void QSTreeNode::unparent()
+void TreeNode::unparent()
 {
     if (m_parent) {
         if (m_parent->left() == this) {
