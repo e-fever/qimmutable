@@ -39,4 +39,17 @@ void QmlListModel::setSource(const QJSValue &source)
     runner.patch(this, patches);
     m_source = source;
 
+    emit sourceChanged();
+}
+
+QStringList QmlListModel::fields() const
+{
+    return m_fields;
+}
+
+void QmlListModel::setFields(const QStringList &fields)
+{
+    m_fields = fields;
+    emit fieldsChanged();
+    setRoleNames(fields);
 }

@@ -70,8 +70,7 @@ public:
     QVariantMap fastDiff(const T& v1, const T& v2) {
         if (isShared(v1,v2)) {
             return QVariantMap();
-        }
-        return diff(v1, v2);
+        }        return diff(v1, v2);
     }
 };
 
@@ -139,7 +138,12 @@ public:
             QJSValueIterator it(object);
             while (it.hasNext()) {
                 it.next();
-                data[it.name()] = it.value().toVariant();
+                if (it.value().isObject()) {
+                    // Prevent to convert an array / object to a QVariantList/QVariantMap respectively
+                    data[it.name()] = QVariant::fromValue<QJSValue>(it.value());
+                } else {
+                    data[it.name()] = it.value().toVariant();
+                }
             }
         }
 

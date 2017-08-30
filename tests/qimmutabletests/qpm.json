@@ -2,7 +2,7 @@
   "name": "",
   "description": "",
   "dependencies": [
-    "com.github.benlau.testable@0.1.2",
+    "com.github.benlau.testable@1.0.2.21",
     "com.github.benlau.qtshell@0.4.3"
   ],
   "license": "NONE",

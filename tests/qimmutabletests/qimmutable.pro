@@ -40,4 +40,5 @@ DISTFILES += \
     SampleData1.qml \
     SampleData1.json \
     tst_QSyncable.qml \
-    tst_ImmutableListModel.qml
+    tst_ImmutableListModel.qml \
+    tst_ImmutableListModel_nested.qml
