@@ -6,8 +6,6 @@ HEADERS += \
     $$PWD/qspatchable.h \
     $$PWD/qsuuid.h \
     $$PWD/priv/qsdiffrunneralgo_p.h \
-    $$PWD/priv/qstree.h \
-    $$PWD/priv/qstreenode.h \
     $$PWD/qsjsonlistmodel.h \
     $$PWD/QSDiffRunner \
     $$PWD/QSListModel \
@@ -20,7 +18,9 @@ HEADERS += \
     $$PWD/priv/qimmutableqmllistmodel_p.h \
     $$PWD/priv/qimmutablecollection.h \
     $$PWD/priv/qimmutableitem_p.h \
-    $$PWD/priv/qimmutablefastdiffrunneralgo_p.h
+    $$PWD/priv/qimmutablefastdiffrunneralgo_p.h \
+    $$PWD/priv/qimmutabletree.h \
+    $$PWD/priv/qimmutabletreenode.h
 
 SOURCES += \
     $$PWD/qsdiffrunner.cpp \

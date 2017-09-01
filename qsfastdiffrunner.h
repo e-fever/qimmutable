@@ -3,10 +3,12 @@
 #include <priv/qimmutablefastdiffrunneralgo_p.h>
 #include <qspatchable.h>
 
+namespace QImmutable {
+
 template <typename T>
-class QSFastDiffRunner {
+class FastDiffRunner {
 public:
-    QSFastDiffRunner() {
+    FastDiffRunner() {
     }
 
     QSPatchSet compare(const QList<T>& from, const QList<T>& to) {
@@ -42,3 +44,5 @@ public:
     }
 
 };
+
+}

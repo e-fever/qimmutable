@@ -1,7 +1,7 @@
 #ifndef QSTREE_H
 #define QSTREE_H
 
-#include "priv/qstreenode.h"
+#include "priv/qimmutabletreenode.h"
 
 // AVL Tree Implementation
 namespace QImmutable {

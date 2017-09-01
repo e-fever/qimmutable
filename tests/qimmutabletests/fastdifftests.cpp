@@ -189,7 +189,7 @@ void FastDiffTests::test_QSFastDiffRunner()
 
     QList<QSPatch> expectedChanges = changes;
 
-    QSFastDiffRunner<ImmutableType1> runner;
+    FastDiffRunner<ImmutableType1> runner;
 
     QList<QSPatch> patches = runner.compare(previous, current);
 

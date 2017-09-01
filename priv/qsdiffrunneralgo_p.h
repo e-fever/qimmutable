@@ -4,7 +4,7 @@
 #include <QString>
 #include "priv/qsalgotypes_p.h"
 #include "qspatch.h"
-#include "qstree.h"
+#include "qimmutabletree.h"
 
 class QSDiffRunnerAlgo {
 

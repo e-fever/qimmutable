@@ -1,7 +1,7 @@
 #pragma once
 #include "priv/qimmutableitem_p.h"
 #include "priv/qsalgotypes_p.h"
-#include "priv/qstree.h"
+#include "priv/qimmutabletree.h"
 #include "priv/qimmutablecollection.h"
 #include "qspatch.h"
 

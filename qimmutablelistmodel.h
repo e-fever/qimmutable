@@ -22,7 +22,7 @@ namespace QImmutable {
                 return;
             }
 
-            QSFastDiffRunner<T> runner;
+            FastDiffRunner<T> runner;
             QList<QSPatch> patches = runner.compare(m_source, source);
             m_source = source;
             runner.patch(this, patches);

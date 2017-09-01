@@ -1,5 +1,5 @@
 #include <QtCore>
-#include "priv/qstreenode.h"
+#include "priv/qimmutabletreenode.h"
 
 using namespace QImmutable;
 

@@ -3,7 +3,7 @@
 #include <QSDiffRunner>
 #include <QSListModel>
 #include "qsyncabletests.h"
-#include "priv/qstree.h"
+#include "priv/qimmutabletree.h"
 #include "math.h"
 
 using namespace QImmutable;

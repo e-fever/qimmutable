@@ -29,7 +29,7 @@ void QmlListModel::setSource(const QJSValue &source)
         return;
     }
 
-    QSFastDiffRunner<QJSValue> runner;
+    FastDiffRunner<QJSValue> runner;
     QImmutable::FastDiffRunnerAlgo<QJSValue> algo;
     Item<QJSValue> wrapper;
     wrapper.keyField = m_keyField;
