@@ -70,7 +70,8 @@ public:
     QVariantMap fastDiff(const T& v1, const T& v2) {
         if (isShared(v1,v2)) {
             return QVariantMap();
-        }        return diff(v1, v2);
+        }
+        return diff(v1, v2);
     }
 };
 

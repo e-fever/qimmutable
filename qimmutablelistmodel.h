@@ -11,10 +11,6 @@ namespace QImmutable {
     class ListModel: public VariantListModel {
     public:
         ListModel(QObject* parent = 0) : VariantListModel(parent) {
-            m_customConvertor = [=](const T& t, int index) {
-                Q_UNUSED(index);
-                return QImmutable::convert(t);
-            };
         }
 
         QList<T> source() const

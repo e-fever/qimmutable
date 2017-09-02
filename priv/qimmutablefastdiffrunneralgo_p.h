@@ -150,7 +150,7 @@ private:
             } else if (i >= to.size() ) {
                 patches << QSPatch(QSPatch::Remove, i, i, 1);
             } else {
-                QVariantMap diff = wrapper.fastDiff(from[i], to[i]);
+                QVariantMap diff = fastDiff(i, i);
                 if (diff.size()) {
                     patches << QSPatch(QSPatch::Update, i, i, 1, diff);
                 }
@@ -180,7 +180,7 @@ private:
                 break;
             }
 
-            QVariantMap diff = wrapper.fastDiff(f,t);
+            QVariantMap diff = fastDiff(index, index);
             if (diff.size()) {
                 //@TODO reserve in block size
                 updatePatches << QSPatch::createUpdate(index, diff);
@@ -305,8 +305,7 @@ private:
         }
 
         if (indexT < to.size() && (type == QSAlgoTypes::Move || type == QSAlgoTypes::NoMove)) {
-            T tmpItemF = from[state.posF];
-            QVariantMap diff = wrapper.fastDiff(tmpItemF, itemT);
+            QVariantMap diff = fastDiff(state.posF, indexT);
             if (diff.size()) {
                 updatePatches << QSPatch(QSPatch::Update, indexT, indexT, 1, diff);
             }
@@ -366,6 +365,18 @@ private:
         while (tree.root() != 0 && tree.min() <= indexF) {
             tree.remove(tree.min());
         }
+    }
+
+    QVariantMap fastDiff(int f, int t) {
+        const T& itemF = from.get(f);
+        const T& itemT = to.get(t);
+        QVariantMap res;
+
+        if (wrapper.isShared(itemF, itemT)) {
+            return res;
+        }
+        res = QImmutable::diff(converter(itemF, f), converter(itemT, t));
+        return res;
     }
 
     Item<T> wrapper;
