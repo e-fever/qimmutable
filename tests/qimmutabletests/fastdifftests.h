@@ -19,10 +19,12 @@ private slots:
     void test_QSImmutable_wrapper();
     void test_compare();
 
-    void test_QSFastDiffRunner();
-    void test_QSFastDiffRunner_data();
+    void test_FastDiffRunner();
+    void test_FastDiffRunner_data();
 
     void test_FastDiffRunner_QJSValue();
+
+    void test_ListModel_setCustomConvertor();
 };
 
 #endif // FASTDIFTESTS_H

@@ -181,7 +181,7 @@ void FastDiffTests::test_compare()
 
 }
 
-void FastDiffTests::test_QSFastDiffRunner()
+void FastDiffTests::test_FastDiffRunner()
 {
     QFETCH(QList<ImmutableType1>, previous);
     QFETCH(QList<ImmutableType1>, current);
@@ -228,7 +228,7 @@ void FastDiffTests::test_QSFastDiffRunner()
 
 }
 
-void FastDiffTests::test_QSFastDiffRunner_data()
+void FastDiffTests::test_FastDiffRunner_data()
 {
     QTest::addColumn<QList<ImmutableType1>>("previous");
     QTest::addColumn<QList<ImmutableType1>>("current");
@@ -422,4 +422,31 @@ void FastDiffTests::test_FastDiffRunner_QJSValue()
     runner.setWrapper(wrapper);
     patches = runner.compare(previous, current);
     QCOMPARE(patches.size(), 1);
+}
+
+void FastDiffTests::test_ListModel_setCustomConvertor()
+{
+    QImmutable::ListModel<ImmutableType1> listModel;
+
+    ImmutableType1 a,b,c;
+    a.setId("a");
+    b.setId("b");
+    c.setId("c");
+
+    QList<ImmutableType1> list;
+    list << a << b << c;
+    listModel.setCustomConvertor([=](const ImmutableType1& type, int index) {
+
+        QVariantMap map = QImmutable::convert(type);
+        map["customValue"] = index;
+        return map;
+    });
+
+    listModel.setSource(list);
+
+    QCOMPARE(listModel.count(), 3);
+    QCOMPARE(listModel.get(0)["customValue"].toInt(), 0);
+    QCOMPARE(listModel.get(1)["customValue"].toInt(), 1);
+    QCOMPARE(listModel.get(2)["customValue"].toInt(), 2);
+
 }

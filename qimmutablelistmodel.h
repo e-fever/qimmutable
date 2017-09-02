@@ -1,6 +1,9 @@
 #pragma once
 #include <qimmutablevariantlistmodel.h>
 #include <qsfastdiffrunner.h>
+#include <functional>
+#include <qimmutableconvert.h>
+
 
 namespace QImmutable {
 
@@ -8,6 +11,10 @@ namespace QImmutable {
     class ListModel: public VariantListModel {
     public:
         ListModel(QObject* parent = 0) : VariantListModel(parent) {
+            m_customConvertor = [=](const T& t, int index) {
+                Q_UNUSED(index);
+                return QImmutable::convert(t);
+            };
         }
 
         QList<T> source() const
@@ -23,14 +30,23 @@ namespace QImmutable {
             }
 
             FastDiffRunner<T> runner;
+            if (m_customConvertor != nullptr) {
+                runner.setCustomConvertor(m_customConvertor);
+            }
             QList<QSPatch> patches = runner.compare(m_source, source);
             m_source = source;
             runner.patch(this, patches);
         }
 
+        void setCustomConvertor(const std::function<QVariantMap (T, int)> &customConvertor) {
+            m_customConvertor = customConvertor;
+        }
+
     private:
 
         QList<T> m_source;
+        std::function<QVariantMap(T, int)> m_customConvertor;
 
     };
+
 }

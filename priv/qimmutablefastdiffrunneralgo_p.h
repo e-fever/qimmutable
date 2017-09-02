@@ -4,6 +4,7 @@
 #include "priv/qimmutabletree.h"
 #include "priv/qimmutablecollection.h"
 #include "qspatch.h"
+#include "qimmutableconvert.h"
 
 namespace QImmutable {
 
@@ -21,6 +22,11 @@ public:
         indexF = -1;
 
         removing = 0;
+
+        converter = [](const T& value, int index) {
+            Q_UNUSED(index);
+            return QImmutable::convert(value);
+        };
     }
 
     QSPatchSet compare(const Collection<T>& from, const Collection<T>& to) {
@@ -120,6 +126,8 @@ public:
         wrapper = value;
     }
 
+    std::function<QVariantMap(T,int)> converter;
+
 private:
 
     // Combine all the processing patches into a single list. It will clear the processing result too.
@@ -138,7 +146,7 @@ private:
 
         for (int i = 0 ; i < max ; i++) {
             if (i >= from.size()) {
-                patches << QSPatch(QSPatch::Insert, i, i, 1, wrapper.convert(to[i]));
+                patches << QSPatch(QSPatch::Insert, i, i, 1, converter(to[i], i));
             } else if (i >= to.size() ) {
                 patches << QSPatch(QSPatch::Remove, i, i, 1);
             } else {
@@ -310,7 +318,7 @@ private:
         QVariantList list;
         list.reserve(count);
         for (int i = from ; i < from + count;i++) {
-            list << wrapper.convert(source[i]);
+            list << converter(source[i], i);
         }
 
         return QSPatch(QSPatch::Insert, from, to, count, list);

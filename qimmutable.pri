@@ -20,7 +20,8 @@ HEADERS += \
     $$PWD/priv/qimmutableitem_p.h \
     $$PWD/priv/qimmutablefastdiffrunneralgo_p.h \
     $$PWD/priv/qimmutabletree.h \
-    $$PWD/priv/qimmutabletreenode.h
+    $$PWD/priv/qimmutabletreenode.h \
+    $$PWD/qimmutableconvert.h
 
 SOURCES += \
     $$PWD/qsdiffrunner.cpp \
@@ -34,4 +35,5 @@ SOURCES += \
     $$PWD/qsyncableqmlwrapper.cpp \
     $$PWD/qimmutablefunctions.cpp \
     $$PWD/qimmutablevariantlistmodel.cpp \
-    $$PWD/priv/qimmutableqmllistmodel.cpp
+    $$PWD/priv/qimmutableqmllistmodel.cpp \
+    $$PWD/qimmutableconvert.cpp

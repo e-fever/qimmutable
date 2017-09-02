@@ -2,6 +2,8 @@
 #include <priv/qsdiffrunneralgo_p.h>
 #include <priv/qimmutablefastdiffrunneralgo_p.h>
 #include <qspatchable.h>
+#include <functional>
+#include <qimmutableconvert.h>
 
 namespace QImmutable {
 
@@ -13,6 +15,9 @@ public:
 
     QSPatchSet compare(const QList<T>& from, const QList<T>& to) {
         QImmutable::FastDiffRunnerAlgo<T> algo;
+        if (m_customConvertor != nullptr) {
+            algo.converter = m_customConvertor;
+        }
         return algo.compare(from , to);
     }
 
@@ -43,6 +48,16 @@ public:
         return true;
     }
 
+    void setCustomConvertor(const std::function<QVariantMap (T, int)> &customConvertor)
+    {
+        m_customConvertor = customConvertor;
+    }
+
+private:
+    std::function<QVariantMap(T, int)> m_customConvertor;
+
 };
+
+
 
 }
