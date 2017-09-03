@@ -18,7 +18,7 @@ QVariantList convertList(QList<T> list) {
     Item<T> wrapper;
     QVariantList res;
     for (int i = 0 ; i < list.size();i++) {
-        res << wrapper.convert(list[i]);
+        res << QImmutable::convert(list[i]);
     }
     return res;
 };
@@ -77,7 +77,7 @@ void FastDiffTests::test_QSImmutable_wrapper()
         QVERIFY(wrapper1.isShared(v1,v2));
 
         v1.setId("a");
-        QVariantMap map = wrapper1.convert(v1);
+        QVariantMap map = QImmutable::convert(v1);
         QVERIFY(map["id"] == v1.id());
 
         QCOMPARE(wrapper1.hasKey(), true);
@@ -89,10 +89,6 @@ void FastDiffTests::test_QSImmutable_wrapper()
         QCOMPARE(wrapper3.key(v3), QString("10"));
 
         v2.setId("b");
-        QVariantMap diff = wrapper1.diff(v1,v2);
-        QCOMPARE(diff.size(), 1);
-        QCOMPARE(diff["id"].toString(), QString("b"));
-
     }
 
     {
@@ -104,7 +100,7 @@ void FastDiffTests::test_QSImmutable_wrapper()
         QVERIFY(wrapper.isShared(v1,v2));
 
         v1["value1"] = 10;
-        QVariantMap map = wrapper.convert(v1);
+        QVariantMap map = QImmutable::convert(v1);
         QVERIFY(map == v1);
 
         QVERIFY(!wrapper.hasKey());
@@ -247,7 +243,6 @@ void FastDiffTests::test_FastDiffRunner_data()
     d.setId("d");
     e.setId("e");
     f.setId("f");
-    Item<ImmutableType1> wrapper;
 
     /* End of preparation */
 
@@ -288,7 +283,7 @@ void FastDiffTests::test_FastDiffRunner_data()
     previous.clear();current.clear();changes.clear();
     previous << a << b << c;
     current << a << b << c << d;
-    changes << QSPatch(QSPatch::Insert, 3, 3, 1, wrapper.convert(d));
+    changes << QSPatch(QSPatch::Insert, 3, 3, 1, QImmutable::convert(d));
     QTest::newRow("Add new element to end") << previous << current << changes;
 
     /* Add 2 elements to middle */
@@ -304,8 +299,8 @@ void FastDiffTests::test_FastDiffRunner_data()
     previous.clear();current.clear();changes.clear();
     previous << a << b << c;
     current << a << d << b << e << c;
-    changes << QSPatch(QSPatch::Insert, 1, 1, 1, wrapper.convert(d))
-            << QSPatch(QSPatch::Insert, 3, 3, 1, wrapper.convert(e));
+    changes << QSPatch(QSPatch::Insert, 1, 1, 1, QImmutable::convert(d))
+            << QSPatch(QSPatch::Insert, 3, 3, 1, QImmutable::convert(e));
     QTest::newRow("Add 2 elements to differnt block") << previous << current << changes;
 
     /* Move from last to first */
@@ -357,7 +352,7 @@ void FastDiffTests::test_FastDiffRunner_data()
     previous << a << b << c << d << e;
     current << a << f << d << e << c;
     changes << QSPatch(QSPatch::Remove,1,1,1)
-            << QSPatch(QSPatch::Insert,1,1,1,wrapper.convert(f))
+            << QSPatch(QSPatch::Insert,1,1,1,QImmutable::convert(f))
             << QSPatch(QSPatch::Move,3,2,2);
     QTest::newRow("Remove, Insert, Move") << previous << current << changes;
 
