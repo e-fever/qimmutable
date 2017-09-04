@@ -15,7 +15,6 @@ using namespace QImmutable;
 
 template <typename T>
 QVariantList convertList(QList<T> list) {
-    Item<T> wrapper;
     QVariantList res;
     for (int i = 0 ; i < list.size();i++) {
         res << QImmutable::convert(list[i]);
