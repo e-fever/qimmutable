@@ -3,7 +3,9 @@
 
 #include <QVariantMap>
 
-class QSPatchable {
+namespace QImmutable {
+
+class Patchable {
 public:
 
     virtual void insert(int index, const QVariantList &value) = 0;
@@ -14,6 +16,8 @@ public:
 
     virtual void set(int index, QVariantMap dict) = 0;
 };
+
+}
 
 #endif // QSPATCHABLE
 

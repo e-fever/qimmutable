@@ -1,6 +1,6 @@
 #pragma once
 #include <qimmutablevariantlistmodel.h>
-#include <qsfastdiffrunner.h>
+#include <qimmutablefastdiffrunner.h>
 #include <functional>
 #include <qimmutableconvert.h>
 

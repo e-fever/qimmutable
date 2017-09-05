@@ -8,7 +8,7 @@
 #include "priv/qimmutablefastdiffrunneralgo_p.h"
 #include "priv/qimmutablecollection.h"
 #include "immutabletype3.h"
-#include "qsfastdiffrunner.h"
+#include "qimmutablefastdiffrunner.h"
 #include "qimmutablelistmodel.h"
 
 using namespace QImmutable;

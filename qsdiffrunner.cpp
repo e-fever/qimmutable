@@ -70,7 +70,7 @@ QSPatchSet QSDiffRunner::compare(const QVariantList &from, const QVariantList &t
  */
 
 
-bool QSDiffRunner::patch(QSPatchable *patchable, const QSPatchSet& patches) const
+bool QSDiffRunner::patch(QImmutable::Patchable *patchable, const QSPatchSet& patches) const
 {
     QVariantMap diff;
     foreach (QSPatch patch, patches) {

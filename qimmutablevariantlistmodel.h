@@ -10,11 +10,11 @@
 #include <QAbstractListModel>
 #include <QPointer>
 #include <QSharedPointer>
-#include "qspatchable.h"
+#include "qimmutablepatchable.h"
 #include "qimmutablefunctions.h"
 
 namespace QImmutable {
-class VariantListModel : public QAbstractListModel, public QSPatchable
+class VariantListModel : public QAbstractListModel, public Patchable
 {
     Q_OBJECT
     Q_PROPERTY(int count READ count NOTIFY countChanged)

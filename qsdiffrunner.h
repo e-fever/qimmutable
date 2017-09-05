@@ -8,7 +8,7 @@
 #define QSDIFFRUNNER_H
 
 #include "qspatch.h"
-#include "qspatchable.h"
+#include "qimmutablepatchable.h"
 #include "qimmutablefunctions.h"
 
 class QSDiffRunner
@@ -23,7 +23,7 @@ public:
     QSPatchSet compare(const QVariantList& from,
                        const QVariantList& to);
 
-    bool patch(QSPatchable* patchable, const QSPatchSet& patches) const;
+    bool patch(QImmutable::Patchable* patchable, const QSPatchSet& patches) const;
 
 signals:
 

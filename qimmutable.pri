@@ -3,7 +3,6 @@ INCLUDEPATH += $$PWD
 HEADERS += \
     $$PWD/qsdiffrunner.h \
     $$PWD/qspatch.h \
-    $$PWD/qspatchable.h \
     $$PWD/qsuuid.h \
     $$PWD/priv/qsdiffrunneralgo_p.h \
     $$PWD/qsjsonlistmodel.h \
@@ -11,7 +10,6 @@ HEADERS += \
     $$PWD/QSListModel \
     $$PWD/qsyncableqmlwrapper.h \
     $$PWD/priv/qsalgotypes_p.h \
-    $$PWD/qsfastdiffrunner.h \
     $$PWD/qimmutablefunctions.h \
     $$PWD/qimmutablelistmodel.h \
     $$PWD/qimmutablevariantlistmodel.h \
@@ -21,7 +19,9 @@ HEADERS += \
     $$PWD/priv/qimmutablefastdiffrunneralgo_p.h \
     $$PWD/priv/qimmutabletree.h \
     $$PWD/priv/qimmutabletreenode.h \
-    $$PWD/qimmutableconvert.h
+    $$PWD/qimmutableconvert.h \
+    $$PWD/qimmutablefastdiffrunner.h \
+    $$PWD/qimmutablepatchable.h
 
 SOURCES += \
     $$PWD/qsdiffrunner.cpp \

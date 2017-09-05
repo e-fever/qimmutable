@@ -1,7 +1,7 @@
 #pragma once
 #include <priv/qsdiffrunneralgo_p.h>
 #include <priv/qimmutablefastdiffrunneralgo_p.h>
-#include <qspatchable.h>
+#include <qimmutablepatchable.h>
 #include <functional>
 #include <qimmutableconvert.h>
 
@@ -21,7 +21,7 @@ public:
         return algo.compare(from , to);
     }
 
-    bool patch(QSPatchable *patchable, const QSPatchSet& patches) const
+    bool patch(Patchable *patchable, const QSPatchSet& patches) const
     {
         QVariantMap diff;
         foreach (QSPatch patch, patches) {
