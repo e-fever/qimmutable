@@ -1,4 +1,5 @@
 INCLUDEPATH += $$PWD
+DEPENDPATH += $$PWD $$PWD/priv
 
 HEADERS += \
     $$PWD/qsdiffrunner.h \

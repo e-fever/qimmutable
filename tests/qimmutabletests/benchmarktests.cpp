@@ -1,7 +1,10 @@
 #include <QTest>
 #include <QUuid>
 #include <QSDiffRunner>
+#include "immutabletype1.h"
 #include "benchmarktests.h"
+#include "qimmutablefastdiffrunner.h"
+#include "priv/qimmutableitem_p.h"
 
 static QVariantList create(int size) {
 
@@ -12,6 +15,21 @@ static QVariantList create(int size) {
         QVariantMap item;
         item["id"] = QString("%1").arg(nextId++);
         item["value"] =  qrand();
+        result << item;
+    }
+
+    return result;
+}
+
+static QList<ImmutableType1> createData(int size) {
+    static int nextId = 0;
+
+    QList<ImmutableType1> result;
+
+    for (int i = 0 ; i < size ; i++) {
+        ImmutableType1 item;
+        item.setId(QString("%1").arg(nextId++));
+        item.setValue(QString("%1").arg(qrand() * 10000));
         result << item;
     }
 
@@ -60,19 +78,23 @@ void BenchmarkTests::changeAll()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    QImmutable::Item<ImmutableType1> wrapper;
+    QVERIFY(wrapper.hasKey());
+
+    auto from = createData(size);
     QVERIFY(from.size() == size);
 
-    QVariantList to = from;
+    auto to = from;
+
     for (int i = 0 ; i < to.count() ; i++) {
-        QVariantMap item = to.at(i).toMap();
-        item["value"] = item["value"].toInt() + 1;
+        auto item = to[i];
+        item.setValue(item.value() + "suffix");
         to[i] = item;
     }
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
+//        runner.setKeyField("id");
         runner.compare(from, to);
     }
 

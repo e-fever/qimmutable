@@ -26,6 +26,7 @@ public:
     Q_INVOKABLE QString key() const;
 
     QString value() const;
+
     void setValue(const QString &value);
 
 private:
