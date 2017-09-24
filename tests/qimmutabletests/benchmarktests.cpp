@@ -43,6 +43,10 @@ BenchmarkTests::BenchmarkTests(QObject *parent) : QObject(parent)
 #else
     sizes << 100000;
 #endif
+    auto ref = [=]() {
+          QTest::qExec(this, 0, 0); // Autotest detect available test cases of a QObject by looking for "QTest::qExec" in source code
+    };
+    Q_UNUSED(ref);
 }
 
 void BenchmarkTests::copy()
@@ -114,15 +118,14 @@ void BenchmarkTests::removeAll()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    auto from = createData(size);
     QVERIFY(from.size() == size);
 
-    QVariantList to;
+    QList<ImmutableType1> to;
     QList<QSPatch> patches;
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         patches = runner.compare(from, to);
     }
 
@@ -137,16 +140,15 @@ void BenchmarkTests::removeOne()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    auto from = createData(size);
     QVERIFY(from.size() == size);
 
-    QVariantList to = from;
+    auto to = from;
     to.takeFirst();
     QList<QSPatch> patches;
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         patches = runner.compare(from, to);
     }
 
@@ -161,9 +163,9 @@ void BenchmarkTests::moveAll()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    auto from = createData(size);
     QVERIFY(from.size() == size);
-    QVariantList to = from;
+    auto to = from;
 
     for (int i = 0 , k = 1; i < from.size() ; i++ , k++) {
         int j = (i + k) % from.size();
@@ -173,8 +175,7 @@ void BenchmarkTests::moveAll()
     QList<QSPatch> patches;
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         patches = runner.compare(from, to);
     }
 
@@ -190,9 +191,9 @@ void BenchmarkTests::reverse()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    auto from = createData(size);
     QVERIFY(from.size() == size);
-    QVariantList to;
+    QList<ImmutableType1> to;
     to.reserve(from.size());
 
     for (int i = from.size() - 1 ; i >= 0 ; i--) {
@@ -202,8 +203,7 @@ void BenchmarkTests::reverse()
     QList<QSPatch> patches;
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         patches = runner.compare(from, to);
     }
 
@@ -230,14 +230,15 @@ void BenchmarkTests::noChange()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    auto from = createData(size);
     QVERIFY(from.size() == size);
 
-    QVariantList to = from;
+    auto to = from;
+    QVERIFY(QImmutable::isShared(to, from));
+    QVERIFY(from.isSharedWith(to));
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         runner.compare(from, to);
     }
 
@@ -256,19 +257,18 @@ void BenchmarkTests::changeOne()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    auto from = createData(size);
     QVERIFY(from.size() == size);
 
-    QVariantList to = from;
-    QVariantMap item = to.at(0).toMap();
-    item["value"] = item["value"].toInt() + 1;
+    auto to = from;
+    ImmutableType1 item = to.at(0);
+    item.setValue(item.value() + "suffix");
     to[0] = item;
 
-    QVERIFY(from != to);
+    QVERIFY(!from.isSharedWith(to));
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         runner.compare(from, to);
     }
 }
@@ -286,19 +286,18 @@ void BenchmarkTests::moveOne()
 {
     QFETCH(int, size);
 
-    QVariantList from = create(size);
+    auto from = createData(size);
     QVERIFY(from.size() == size);
 
-    QVariantList to = from;
+    auto to = from;
     to.move(0, to.size() - 1);
 
-    QVERIFY(from != to);
+    QVERIFY(!from.isSharedWith( to));
 
     QSPatchSet patch;
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         patch = runner.compare(from, to);
     }
 
@@ -314,14 +313,11 @@ void BenchmarkTests::insertAll()
 {
     QFETCH(int, size);
 
-    QVariantList from;
-    QVariantList to = create(size);
-
-    QVERIFY(from != to);
+    auto to = createData(size);
+    decltype(to) from;
 
     QBENCHMARK {
-        QSDiffRunner runner;
-        runner.setKeyField("id");
+        QImmutable::FastDiffRunner<ImmutableType1> runner;
         runner.compare(from, to);
     }
 
