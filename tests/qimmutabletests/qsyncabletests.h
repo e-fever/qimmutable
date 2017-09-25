@@ -23,14 +23,11 @@ private slots:
     void tree_updateMin();
     void tree_balance();
 
-    void diffRunner();
-    void diffRunner_data();
-
     void test_ListModel_move();
     void test_ListModel_move_data();
 
-    void diffRunner_failedCase();
-    void diffRunner_failedCase_data();
+    void test_ListModel_failedCase();
+    void test_ListModel_failedCase_data();
 
     void diffRunner_noKeyField();
     void diffRunner_noKeyField_data();
