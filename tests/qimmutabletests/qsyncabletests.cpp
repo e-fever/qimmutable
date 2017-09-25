@@ -4,7 +4,10 @@
 #include <QSListModel>
 #include "qsyncabletests.h"
 #include "priv/qimmutabletree.h"
+#include "immutabletype1.h"
 #include "math.h"
+#include "qimmutablelistmodel.h"
+#include "qimmutablefunctions.h"
 
 using namespace QImmutable;
 
@@ -38,7 +41,6 @@ void run() {
     QVariantList fList = convert(from.split(","));
     QVariantList tList = convert(to.split(","));
 
-
     QImmutable::VariantListModel listModel;
 
     listModel.setStorage(fList);
@@ -58,11 +60,74 @@ void run() {
 
     QVERIFY(tList == listModel.storage());
     qDebug() << patches;
+}
 
+void runFastDiff() {
+    auto convert = [=](const QStringList& list) {
+        QList<ImmutableType1> result;
+
+        for (int i = 0 ; i < list.size() ; i++) {
+            ImmutableType1 item;
+            item.setId(list[i]);
+            item.setValue(list[i]);
+            result << item;
+        }
+
+        return result;
+    };
+
+    auto compareList = [=](QList<ImmutableType1> l1, QList<ImmutableType1> l2) {
+        if (l1.size() != l2.size()) {
+            return false;
+        }
+
+        for (int i = 0 ; i < l1.size() ;i++) {
+            auto item1 = l1[i];
+            auto item2 = l2[i];
+            QVariantMap map1, map2;
+            assignOnGadget(map1,item1);
+            assignOnGadget(map2,item2);
+
+            if (diff(map1,map2).size() > 0) {
+                return false;
+            }
+
+        }
+
+
+        return true;
+    };
+
+    QFETCH(QString, from);
+    QFETCH(QString, to);
+
+    auto fList = convert(from.split(","));
+    auto tList = convert(to.split(","));
+
+    QImmutable::ListModel<ImmutableType1> model;
+
+    model.setSource(fList);
+    model.setSource(tList);
+
+    QList<ImmutableType1> storage;
+
+    for (int i = 0 ; i < model.count(); i++) {
+        QVariantMap map = model.get(i);
+        ImmutableType1 item;
+        assignOnGadget(item, map);
+        storage << item;
+    }
+
+    QVERIFY(compareList(tList, storage));
 }
 
 QSyncableTests::QSyncableTests(QObject *parent) : QObject(parent)
 {
+    auto ref = [=]() {
+          QTest::qExec(this, 0, 0); // Autotest detect available test cases of a QObject by looking for "QTest::qExec" in source code
+    };
+    Q_UNUSED(ref);
+
 
      qsrand( QDateTime::currentDateTime().toTime_t());
 }
@@ -575,13 +640,12 @@ void QSyncableTests::diffRunner_data()
 
 }
 
-void QSyncableTests::diffRunner_move()
+void QSyncableTests::test_ListModel_move()
 {
-    run();
-
+    runFastDiff();
 }
 
-void QSyncableTests::diffRunner_move_data()
+void QSyncableTests::test_ListModel_move_data()
 {
     QTest::addColumn<QString>("from");
     QTest::addColumn<QString>("to");
