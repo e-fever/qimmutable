@@ -8,6 +8,7 @@
 #include "math.h"
 #include "qimmutablelistmodel.h"
 #include "qimmutablefunctions.h"
+#include "immutabletype2.h"
 
 using namespace QImmutable;
 
@@ -32,6 +33,38 @@ static QVariantList convert(const QStringList& list) {
 
     return res;
 
+}
+
+template <typename T>
+static QList<T> parse(QString string) {
+
+    QStringList list = string.split(",");
+
+    QList<T> result;
+
+    for (int i = 0 ; i < list.size() ; i++) {
+        T item;
+        item.setId(list[i]);
+        item.setValue(list[i]);
+        result << item;
+    }
+
+    return result;
+}
+
+template <>
+static QList<ImmutableType2> parse(QString string) {
+    QStringList list = string.split(",");
+
+    QList<ImmutableType2> result;
+
+    for (int i = 0 ; i < list.size() ; i++) {
+        ImmutableType2 item;
+        item.setValue(list[i]);
+        result << item;
+    }
+
+    return result;
 }
 
 void run() {
@@ -63,19 +96,6 @@ void run() {
 }
 
 void runFastDiff() {
-    auto convert = [=](const QStringList& list) {
-        QList<ImmutableType1> result;
-
-        for (int i = 0 ; i < list.size() ; i++) {
-            ImmutableType1 item;
-            item.setId(list[i]);
-            item.setValue(list[i]);
-            result << item;
-        }
-
-        return result;
-    };
-
     auto compareList = [=](QList<ImmutableType1> l1, QList<ImmutableType1> l2) {
         if (l1.size() != l2.size()) {
             return false;
@@ -101,8 +121,8 @@ void runFastDiff() {
     QFETCH(QString, from);
     QFETCH(QString, to);
 
-    auto fList = convert(from.split(","));
-    auto tList = convert(to.split(","));
+    auto fList = parse<ImmutableType1>(from);
+    auto tList = parse<ImmutableType1>(to);
 
     QImmutable::ListModel<ImmutableType1> model;
 
@@ -505,46 +525,67 @@ void QSyncableTests::test_ListModel_failedCase_data()
 
 }
 
-void QSyncableTests::diffRunner_noKeyField()
+void QSyncableTests::test_ListModel_noKeyField()
 {
-    QFETCH(QVariantList, from);
-    QFETCH(QVariantList, to);
+    auto compareList = [=](QList<ImmutableType2> l1, QList<ImmutableType2> l2) {
+        if (l1.size() != l2.size()) {
+            return false;
+        }
 
-    QSDiffRunner runner;
-    QList<QSPatch> patches = runner.compare(from, to);
+        for (int i = 0 ; i < l1.size() ;i++) {
+            auto item1 = l1[i];
+            auto item2 = l2[i];
+            QVariantMap map1, map2;
+            assignOnGadget(map1,item1);
+            assignOnGadget(map2,item2);
+
+            if (diff(map1,map2).size() > 0) {
+                return false;
+            }
+        }
+        return true;
+    };
 
 
-    VariantListModel listModel;
-    listModel.setStorage(from);
-    runner.patch(&listModel, patches);
+    QFETCH(QString, from);
+    QFETCH(QString, to);
 
-    QVERIFY(listModel.storage() == to);
+    auto fList = parse<ImmutableType2>(from);
+    auto tList = parse<ImmutableType2>(to);
+
+    QImmutable::ListModel<ImmutableType2> model;
+
+    model.setSource(fList);
+    model.setSource(tList);
+
+    QList<ImmutableType2> storage;
+
+    for (int i = 0 ; i < model.count(); i++) {
+        QVariantMap map = model.get(i);
+        ImmutableType2 item;
+        assignOnGadget(item, map);
+        storage << item;
+    }
+
+    QVERIFY(compareList(tList, storage));
 }
 
-void QSyncableTests::diffRunner_noKeyField_data()
+void QSyncableTests::test_ListModel_noKeyField_data()
 {
-    QTest::addColumn<QVariantList>("from");
-    QTest::addColumn<QVariantList>("to");
-
-    QVariantMap a,b,c,d,e;
-
-    a["id"] = "a";
-    b["id"] = "b";
-    c["id"] = "c";
-    d["id"] = "d";
-    e["id"] = "e";
+    QTest::addColumn<QString>("from");
+    QTest::addColumn<QString>("to");
 
     QTest::newRow("Shifted")
-           << (QVariantList() << a << b << c << d)
-           << (QVariantList() << b << c << d << a);
+           << ("a,b,c,d")
+           << ("b,c,d,a");
 
     QTest::newRow("Remove")
-           << (QVariantList() << a << b << c << d)
-           << (QVariantList() << a << b << c);
+           << ("a,b,c,d")
+           << ("a,b,c");
 
     QTest::newRow("Add")
-           << (QVariantList() << a << b << c << d)
-           << (QVariantList() << a << b << c << d << e);
+           << ("a,b,c,d")
+           << ("a,b,c");
 }
 
 void QSyncableTests::diffRunner_invalidKey()

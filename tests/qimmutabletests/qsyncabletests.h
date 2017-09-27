@@ -29,8 +29,8 @@ private slots:
     void test_ListModel_failedCase();
     void test_ListModel_failedCase_data();
 
-    void diffRunner_noKeyField();
-    void diffRunner_noKeyField_data();
+    void test_ListModel_noKeyField();
+    void test_ListModel_noKeyField_data();
 
     void diffRunner_invalidKey();
 
